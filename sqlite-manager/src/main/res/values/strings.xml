@@ -1,0 +1,15 @@
+<resources>
+    <string name="sqlite_manager_app_name">SqliteManager</string>
+
+
+    <string name="sqlite_manager_error_while_fetching_table_names">Error while fetching the tables</string>
+    <string name="sqlite_manager_database_has_no_tables">Database has no Tables</string>
+    <string name="sqlite_manager_please_select_a_table">Please select a table</string>
+    <string name="sqlite_manager_empty_custom_query">Empty Custom Query</string>
+    <string name="sqlite_manager_error_while_fetching_column_names">Error while fetching the columns</string>
+    <string name="sqlite_manager_custom_query">Custom Query</string>
+    <string name="sqlite_manager_cancel">Cancel</string>
+    <string name="sqlite_manager_query">Query</string>
+    <string name="sqlite_manager_custom_query_hint">Enter the SQL query you need to perform</string>
+    <string name="sqlite_manager_custom_query_contacins_order_by">Your Custom Query contains \"ORDER BY\" so can\'t reorder the data</string>
+</resources>

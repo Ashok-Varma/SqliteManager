@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sqlite_manager_colorPrimary">#00BCD4</color>
+    <color name="sqlite_manager_colorPrimaryDark">#0097A7</color>
+    <color name="sqlite_manager_colorAccent">#FF9800</color>
+
+    <color name="sqlite_manager_white">#FFFFFF</color>
+    <color name="sqlite_manager_background_white">@color/sqlite_manager_white</color>
+
+    <color name="sqlite_manager_txt_white">@color/sqlite_manager_white</color>
+    <color name="sqlite_manager_txt_primary">#dd000000</color>
+    <color name="sqlite_manager_txt_secondary">#8b000000</color>
+    <color name="sqlite_manager_txt_disabled">#62000000</color><!-- Disabled text, hint text, and icons -->
+    <color name="sqlite_manager_txt_error">#ddff0000</color>
+</resources>

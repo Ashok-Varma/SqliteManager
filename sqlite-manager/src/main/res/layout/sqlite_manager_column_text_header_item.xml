@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/sqlite_manager_mtxt_sub_title"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
+    android:background="?colorPrimary"
+    android:ellipsize="end"
+    android:foreground="?selectableItemBackground"
+    android:maxLines="1"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp"
+    android:textColor="@color/sqlite_manager_txt_white"
+    tools:text="test" />
