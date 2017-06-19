@@ -1,1 +1,1 @@
-include ':sample', ':sqlite-manager'
+include ':sample', ':sqlite-manager', ':sqlite-manager-no-op'

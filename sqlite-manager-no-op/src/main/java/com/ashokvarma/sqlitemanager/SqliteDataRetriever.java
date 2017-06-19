@@ -24,12 +24,10 @@ public interface SqliteDataRetriever {
      */
     public Cursor rawQuery(@NonNull String query, String[] selectionArgs);
 
-
     /**
      * Return the name of the SQLite database being opened, as given to the constructor.
      */
     public String getDatabaseName();
-
 
     /**
      * Releases a reference to the database object, closing the object if the last database reference was released.

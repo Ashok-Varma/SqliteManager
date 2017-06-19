@@ -8,10 +8,11 @@ android {
         applicationId "com.ashokvarma.sqlitemanager.sample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.ext.LIBRARY_VERSION_CODE
+        versionName rootProject.ext.LIBRARY_VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,5 +31,6 @@ dependencies {
     compile "android.arch.persistence.room:runtime:${rootProject.roomDbVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${rootProject.roomDbVersion}"
     testCompile 'junit:junit:4.12'
-    compile project(':sqlite-manager')
+    debugCompile project(':sqlite-manager')
+    releaseCompile project(':sqlite-manager-no-op')
 }

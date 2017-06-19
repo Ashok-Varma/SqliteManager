@@ -1,18 +1,41 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'SqliteManagerNoOp'
+
+    publishedGroupId = 'com.ashokvarma.android'
+    libraryName = 'Sqlite Manager NoOp'
+    artifact = 'sqlite-manager-no-op'
+
+    libraryDescription = 'Sqlite Manager helps to manage your android Sqlite Database very effectively with ease'
+
+    siteUrl = 'https://github.com/Ashok-Varma/SqliteManager'
+    gitUrl = 'https://github.com/Ashok-Varma/SqliteManager.git'
+
+    libraryVersion = rootProject.ext.LIBRARY_VERSION_NAME
+
+    developerId = 'Ashok-Varma'
+    developerName = 'Ashok Varma'
+    developerEmail = 'ashokvitece@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        versionCode rootProject.ext.LIBRARY_VERSION_CODE
+        versionName rootProject.ext.LIBRARY_VERSION_NAME
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -26,6 +49,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
     testCompile 'junit:junit:4.12'
 }
+
+// Place it at the end of the file
+apply from: 'install_lib.gradle'
+apply from: 'bintray_lib.gradle'
