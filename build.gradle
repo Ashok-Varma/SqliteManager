@@ -38,6 +38,6 @@ ext {
 
     roomDbVersion = "1.0.0-alpha3"
 
-    LIBRARY_VERSION_NAME = "0.9.0"
-    LIBRARY_VERSION_CODE = 1
+    LIBRARY_VERSION_NAME = "0.9.1"
+    LIBRARY_VERSION_CODE = 2
 }

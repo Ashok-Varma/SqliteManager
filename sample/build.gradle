@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'release'
+            keyPassword 'release'
+            storeFile file('/Users/ashokvarma/Desktop/Projects/Android/MyPrecious/Projects/SqliteManager/sample/release.jks')
+            storePassword 'release'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
     defaultConfig {
         applicationId "com.ashokvarma.sqlitemanager.sample"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -12,11 +19,11 @@ android {
         versionName rootProject.ext.LIBRARY_VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }

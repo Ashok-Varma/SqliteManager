@@ -6,6 +6,8 @@
         <activity
             android:name=".SqliteManagerActivity"
             android:label="@string/sqlite_manager_app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.ashokvarma.sqlitemanager.task"
             android:theme="@style/SqliteManager.Theme" />
     </application>
 

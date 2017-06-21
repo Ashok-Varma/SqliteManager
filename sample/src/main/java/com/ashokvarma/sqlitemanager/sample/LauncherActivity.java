@@ -5,6 +5,7 @@ import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -61,11 +62,14 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
         HelperSqliteDataRetriever(SqliteHelper sqliteHelper) {
             mSqliteHelper = sqliteHelper;
+            mSQLiteDatabase = mSqliteHelper.getWritableDatabase();
         }
 
         @Override
-        public Cursor rawQuery(String query, String[] selectionArgs) {
-            mSQLiteDatabase = mSqliteHelper.getWritableDatabase();
+        public Cursor rawQuery(@NonNull String query, String[] selectionArgs) {
+            if (mSQLiteDatabase == null || !mSQLiteDatabase.isOpen()) {
+                mSQLiteDatabase = mSqliteHelper.getWritableDatabase();
+            }
             return mSQLiteDatabase.rawQuery(query, selectionArgs);
         }
 
@@ -76,12 +80,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void freeResources() {
-            if (mSQLiteDatabase != null) {
-                if (mSQLiteDatabase.isOpen()) {
-                    mSQLiteDatabase.close();
-                }
-                mSQLiteDatabase = null;
-            }
+            // not good practice to open multiple database connections and close every time
         }
     }
 
@@ -94,7 +93,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         }
 
         @Override
-        public Cursor rawQuery(String query, String[] selectionArgs) {
+        public Cursor rawQuery(@NonNull String query, String[] selectionArgs) {
             mSQLiteDatabase = mSqliteHelper.getWritableDatabase();
             return mSQLiteDatabase.query(query, selectionArgs);
         }
@@ -106,26 +105,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void freeResources() {
-            /**
-             * Shouldn't close db for room because Room also uses same instance of connection (which is created only once)
-             *
-             * if we close this :
-             *
-             * 1) None of the operations work with Room
-             * 2) if you get the getWritableDatabase() it will return the same instance which we can't perform operations on because it was closed already
-             * */
-
-
-//            if (mSQLiteDatabase != null) {
-//                if (mSQLiteDatabase.isOpen()) {
-//                    try {
-//                        mSQLiteDatabase.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                mSQLiteDatabase = null;
-//            }
+            // not good practice to open multiple database connections and close every time
         }
     }
 }

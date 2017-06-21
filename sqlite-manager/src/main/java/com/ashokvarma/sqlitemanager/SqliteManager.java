@@ -16,7 +16,7 @@ public class SqliteManager {
 
     public static void launchSqliteManager(Context context, SqliteDataRetriever sqliteDataRetriever) {
         mSqliteDataRetriever = sqliteDataRetriever;
-        context.startActivity(new Intent(context, SqliteManagerActivity.class));
+        context.startActivity(new Intent(context, SqliteManagerActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     static void clearReferences() {
