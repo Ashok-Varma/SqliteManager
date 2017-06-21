@@ -1,5 +1,6 @@
 package com.ashokvarma.sqlitemanager;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import android.widget.TextView;
  * @see LinearLayout
  * @since 18 Jun 2017
  */
+@SuppressLint("Instantiatable")
 class ColumnNameView extends LinearLayout implements View.OnClickListener {
 
     private String[] mTableColumnNames;

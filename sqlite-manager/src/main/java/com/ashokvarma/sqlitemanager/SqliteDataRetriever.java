@@ -28,7 +28,7 @@ public interface SqliteDataRetriever {
 
 
     /**
-     * Return the name of the SQLite database being opened, as given to the constructor.
+     * @return Return the name of the SQLite database being opened, as given to the constructor.
      *
      * Called once per launch
      */
@@ -39,7 +39,7 @@ public interface SqliteDataRetriever {
      * This method is used to close the database (or) release any resources after every query.
      * (called after #rawQuery returned cursor is processed)
      *
-     * It's <b>not a good practice</> to get new instance of writable database on every query and close it after the query
+     * It's not a good practice to get new instance of writable database on every query and close it after the query
      * But if followed some pattern which don't allow to keep many open connections. This can be used to close the connection and free the resources
      *
      * Called Multiple Times
