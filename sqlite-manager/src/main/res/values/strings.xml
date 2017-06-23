@@ -12,4 +12,5 @@
     <string name="sqlite_manager_query">Query</string>
     <string name="sqlite_manager_custom_query_hint">Enter the SQL query you need to perform</string>
     <string name="sqlite_manager_custom_query_contacins_order_by">Your Custom Query contains \"ORDER BY\" so can\'t reorder the data</string>
+    <string name="sqlite_manager_refresh_query">Refresh Query</string>
 </resources>

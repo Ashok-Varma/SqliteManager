@@ -44,13 +44,6 @@ android {
     }
 }
 
-dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
-}
-
 // Place it at the end of the file
 apply from: 'install_lib.gradle'
 apply from: 'bintray_lib.gradle'

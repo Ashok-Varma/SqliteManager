@@ -18,12 +18,12 @@ android {
         versionCode rootProject.ext.LIBRARY_VERSION_CODE
         versionName rootProject.ext.LIBRARY_VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 
@@ -33,15 +33,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //Third party database ORM's
     compile "android.arch.persistence.room:runtime:${rootProject.roomDbVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${rootProject.roomDbVersion}"
-    testCompile 'junit:junit:4.12'
+
+    // library dependencies
     debugCompile project(':sqlite-manager')
     releaseCompile project(':sqlite-manager-no-op')
 }

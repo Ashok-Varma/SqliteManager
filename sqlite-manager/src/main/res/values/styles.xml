@@ -5,9 +5,4 @@
         <item name="colorPrimaryDark">@color/sqlite_manager_colorPrimaryDark</item>
         <item name="colorAccent">@color/sqlite_manager_colorAccent</item>
     </style>
-    <style name="SqliteManager.Theme.2" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/sqlite_manager_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/sqlite_manager_colorPrimaryDark</item>
-        <item name="colorAccent">@color/sqlite_manager_colorAccent</item>
-    </style>
 </resources>

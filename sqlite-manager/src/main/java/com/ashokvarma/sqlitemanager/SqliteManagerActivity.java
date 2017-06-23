@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +38,6 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     private ColumnNameView mColumnNameView;
     private RecyclerView mTableLayoutRecyclerView;
 
-    private View mActionRefresh;
     private View mActionCustomQuery;
 
     @Override
@@ -51,7 +53,6 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mColumnNameView = (ColumnNameView) findViewById(R.id.sqlite_manager_table_layout_header);
         mErrorLayoutText = (TextView) findViewById(R.id.sqlite_manager_error_layout_text);
         mTableLayoutRecyclerView = (RecyclerView) findViewById(R.id.sqlite_manager_table_layout_recycler_view);
-        mActionRefresh = findViewById(R.id.sqlite_manager_action_refresh);
         mActionCustomQuery = findViewById(R.id.sqlite_manager_action_custom_query);
 
         mToolbar = (Toolbar) findViewById(R.id.sqlite_manager_toolbar);
@@ -60,10 +61,8 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mTableRecyclerAdapter = new TableRecyclerAdapter(null);
         mTableLayoutRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mTableLayoutRecyclerView.setAdapter(mTableRecyclerAdapter);
-
+        mTableSelectionSpinner.setOnItemSelectedListener(this);
         mColumnNameView.setColumnHeaderSortChangeListener(this);
-
-        mActionRefresh.setOnClickListener(this);
         mActionCustomQuery.setOnClickListener(this);
 
         mSqliteManagerPresenter.bindView(this);
@@ -147,7 +146,6 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tableNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTableSelectionSpinner.setAdapter(adapter);
-        mTableSelectionSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -185,11 +183,25 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.sqlite_manager_action_refresh) {
-            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
-            mSqliteManagerPresenter.onRefreshClicked(selectedTableName);
-        } else if (v.getId() == R.id.sqlite_manager_action_custom_query) {
+        if (v.getId() == R.id.sqlite_manager_action_custom_query) {
             mSqliteManagerPresenter.onCustomQueryClicked();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sqlite_manager_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_query_refresh){
+            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+            mSqliteManagerPresenter.onRefreshClicked(selectedTableName);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

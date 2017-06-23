@@ -45,14 +45,14 @@ class SqliteManagerPresenter {
         loadTableNames();
     }
 
+    void unBindView(SqliteManagerView sqliteManagerView) {
+        mSqliteManagerView = null;
+    }
+
     private void changeSubTitle() {
         String databaseName = mSqliteDataRetriever.getDatabaseName();
         String appName = getApplicationName(getView().getViewContext());
         getView().setSubtitle((TextUtils.isEmpty(databaseName) ? "" : databaseName + " ") + appName);
-    }
-
-    void unBindView(SqliteManagerView sqliteManagerView) {
-        mSqliteManagerView = null;
     }
 
     private void loadTableNames() {
