@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -119,7 +119,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.sqlite_manager_custom_query_dialog, null);
 
-        final EditText customQueryEditText = (EditText) dialogView.findViewById(R.id.sqlite_manager_custom_query_edit_text);
+        final TextInputEditText customQueryEditText = (TextInputEditText) dialogView.findViewById(R.id.sqlite_manager_custom_query_edit_text);
         customQueryEditText.setText(previousCustomQuery);
 
         new AlertDialog

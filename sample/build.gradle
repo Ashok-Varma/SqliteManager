@@ -46,6 +46,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:${rootProject.roomDbVersion}"
 
     // library dependencies
-    debugCompile project(':sqlite-manager')
-    releaseCompile project(':sqlite-manager-no-op')
+    compile project(':sqlite-manager')
+//    debugCompile project(':sqlite-manager')
+//    releaseCompile project(':sqlite-manager-no-op')
 }
