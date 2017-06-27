@@ -10,31 +10,31 @@ import android.database.Cursor;
  * @since 17 Jun 2017
  */
 class SqliteResponse {
-    private Cursor cursor;
-    private Throwable throwable;
-    private boolean querySuccess;
+    private Cursor mCursor;
+    private Throwable mThrowable;
+    private boolean mQuerySuccess;
 
     Cursor getCursor() {
-        return cursor;
+        return mCursor;
     }
 
     void setCursor(Cursor cursor) {
-        this.cursor = cursor;
+        this.mCursor = cursor;
     }
 
     Throwable getThrowable() {
-        return throwable;
+        return mThrowable;
     }
 
     void setThrowable(Throwable throwable) {
-        this.throwable = throwable;
+        this.mThrowable = throwable;
     }
 
     boolean isQuerySuccess() {
-        return querySuccess;
+        return mQuerySuccess;
     }
 
     void setQuerySuccess(boolean querySuccess) {
-        this.querySuccess = querySuccess;
+        this.mQuerySuccess = querySuccess;
     }
 }

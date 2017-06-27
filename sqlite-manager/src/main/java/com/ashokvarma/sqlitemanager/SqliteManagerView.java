@@ -31,6 +31,10 @@ interface SqliteManagerView {
 
     void displayError(String error);
 
+    void informErrorToUser(@StringRes int errorMessageId);
+
+    void informErrorToUser(String error);
+
     void setSpinnerAdapter(ArrayList<String> tableNames);
 
     void showContentView();
@@ -40,4 +44,8 @@ interface SqliteManagerView {
     void displayRows(List<SparseArray<String>> columnIndexToValuesArray);
 
     void showCustomQueryDialog(String previousCustomQuery);
+
+    void setAddFABVisible(boolean visible);
+
+    void showAddRowDialog(String tableName, String[] tableColumnNames);
 }

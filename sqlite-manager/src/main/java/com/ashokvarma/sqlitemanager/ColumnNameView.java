@@ -108,9 +108,9 @@ class ColumnNameView extends LinearLayout implements View.OnClickListener {
         tableNameHeaderViewTag.sortOrder = nextSortOrder;
         Drawable ascendingDescendingIcon;
         if (isAscendingOrder) {
-            ascendingDescendingIcon = getContext().getResources().getDrawable(R.drawable.ic_action_arrow_upward_white);
+            ascendingDescendingIcon = getContext().getResources().getDrawable(R.drawable.ic_sort_ascending_white_24dp);
         } else {
-            ascendingDescendingIcon = getContext().getResources().getDrawable(R.drawable.ic_action_arrow_downward_white);
+            ascendingDescendingIcon = getContext().getResources().getDrawable(R.drawable.ic_sort_descending_white_24dp);
         }
 
         String tableName = mTableColumnNames[tableNameHeaderViewTag.columnIndex];
@@ -123,6 +123,10 @@ class ColumnNameView extends LinearLayout implements View.OnClickListener {
 
     public void setColumnHeaderSortChangeListener(ColumnHeaderSortChangeListener columnHeaderSortChangeListener) {
         this.mColumnHeaderSortChangeListener = columnHeaderSortChangeListener;
+    }
+
+    public String[] getTableColumnNames() {
+        return mTableColumnNames;
     }
 
     ///////////////////////////////////////////////////////////////////////////

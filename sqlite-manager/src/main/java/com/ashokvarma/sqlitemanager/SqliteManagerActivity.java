@@ -4,7 +4,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +35,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     private SqliteManagerPresenter mSqliteManagerPresenter;
     private TableRecyclerAdapter mTableRecyclerAdapter;
 
+    private View mSqliteManagerParent;
     private Toolbar mToolbar;
     private AppCompatSpinner mTableSelectionSpinner;
     private View mErrorLayout;
@@ -37,6 +43,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     private View mTableLayout;
     private ColumnNameView mColumnNameView;
     private RecyclerView mTableLayoutRecyclerView;
+    private FloatingActionButton mSqliteManagerAddFab;
 
     private View mActionCustomQuery;
 
@@ -47,6 +54,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
         mSqliteManagerPresenter = new SqliteManagerPresenter(SqliteManager.mSqliteDataRetriever);
 
+        mSqliteManagerParent = findViewById(R.id.sqlite_manager_parent);
         mTableSelectionSpinner = (AppCompatSpinner) findViewById(R.id.sqlite_manager_table_selection_spinner);
         mErrorLayout = findViewById(R.id.sqlite_manager_error_layout);
         mTableLayout = findViewById(R.id.sqlite_manager_table_layout);
@@ -54,6 +62,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mErrorLayoutText = (TextView) findViewById(R.id.sqlite_manager_error_layout_text);
         mTableLayoutRecyclerView = (RecyclerView) findViewById(R.id.sqlite_manager_table_layout_recycler_view);
         mActionCustomQuery = findViewById(R.id.sqlite_manager_action_custom_query);
+        mSqliteManagerAddFab = (FloatingActionButton) findViewById(R.id.sqlite_manager_add_fab);
 
         mToolbar = (Toolbar) findViewById(R.id.sqlite_manager_toolbar);
         setSupportActionBar(mToolbar);
@@ -64,6 +73,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mTableSelectionSpinner.setOnItemSelectedListener(this);
         mColumnNameView.setColumnHeaderSortChangeListener(this);
         mActionCustomQuery.setOnClickListener(this);
+        mSqliteManagerAddFab.setOnClickListener(this);
 
         mSqliteManagerPresenter.bindView(this);
     }
@@ -115,6 +125,25 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     }
 
     @Override
+    public void informErrorToUser(@StringRes int errorMessageId) {
+        informErrorToUser(getString(errorMessageId));
+    }
+
+    @Override
+    public void informErrorToUser(String error) {
+        Snackbar.make(mSqliteManagerParent, error, Snackbar.LENGTH_INDEFINITE).show();
+    }
+
+    @Override
+    public void setAddFABVisible(boolean visible) {
+        if (visible) {
+            mSqliteManagerAddFab.show();
+        } else {
+            mSqliteManagerAddFab.hide();
+        }
+    }
+
+    @Override
     public void showCustomQueryDialog(String previousCustomQuery) {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.sqlite_manager_custom_query_dialog, null);
@@ -130,6 +159,48 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
                 .setPositiveButton(R.string.sqlite_manager_query, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mSqliteManagerPresenter.onCustomQuerySubmitted(customQueryEditText.getText().toString());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.sqlite_manager_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void showAddRowDialog(final String tableName, final String[] tableColumnNames) {
+        LayoutInflater inflater = this.getLayoutInflater();
+        final ArrayList<TextInputEditText> editTextViews = new ArrayList<>(tableColumnNames.length);
+
+        ScrollView dialogView = new ScrollView(this);
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        int padding = getResources().getDimensionPixelSize(R.dimen.add_edit_item_holder_padding);
+        linearLayout.setPadding(padding, padding, padding, padding);
+        dialogView.addView(linearLayout);
+
+        for (String currentColumnName : tableColumnNames) {
+            View columnView = inflater.inflate(R.layout.sqlite_manager_add_edit_dialog_item, null);
+            ((TextInputLayout) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_text_input_layout)).setHint(currentColumnName);
+            editTextViews.add(((TextInputEditText) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text)));
+            linearLayout.addView(columnView);
+        }
+
+        new AlertDialog
+                .Builder(this)
+                .setView(dialogView)
+                .setTitle(R.string.sqlite_manager_add_row_dialog_title)
+                .setMessage(getString(R.string.sqlite_manager_add_row_dialog_message, tableName))
+                .setPositiveButton(R.string.sqlite_manager_add, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        final ArrayList<String> columnValues = new ArrayList<>(tableColumnNames.length);
+                        for (TextInputEditText currentEditText : editTextViews) {
+                            columnValues.add(currentEditText.getText().toString());
+                        }
+                        mSqliteManagerPresenter.addRow(tableName, tableColumnNames, columnValues);
                         dialog.dismiss();
                     }
                 })
@@ -185,6 +256,9 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     public void onClick(View v) {
         if (v.getId() == R.id.sqlite_manager_action_custom_query) {
             mSqliteManagerPresenter.onCustomQueryClicked();
+        } else if (v.getId() == R.id.sqlite_manager_add_fab) {
+            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+            mSqliteManagerPresenter.onAddFabClicked(selectedTableName, mColumnNameView.getTableColumnNames());
         }
     }
 
@@ -197,7 +271,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_query_refresh){
+        if (item.getItemId() == R.id.action_query_refresh) {
             String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
             mSqliteManagerPresenter.onRefreshClicked(selectedTableName);
             return true;

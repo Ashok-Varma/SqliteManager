@@ -6,11 +6,18 @@
     <string name="sqlite_manager_database_has_no_tables">Database has no Tables</string>
     <string name="sqlite_manager_please_select_a_table">Please select a table</string>
     <string name="sqlite_manager_empty_custom_query">Empty Custom Query</string>
-    <string name="sqlite_manager_error_while_fetching_column_names">Error while fetching the columns</string>
+    <string name="sqlite_manager_error_while_fetching_data">Error while fetching data. Retry</string>
     <string name="sqlite_manager_custom_query">Custom Query</string>
     <string name="sqlite_manager_cancel">Cancel</string>
     <string name="sqlite_manager_query">Query</string>
     <string name="sqlite_manager_custom_query_hint">Enter the SQL query you need to perform</string>
     <string name="sqlite_manager_custom_query_contacins_order_by">Your Custom Query contains \"ORDER BY\" so can\'t reorder the data</string>
     <string name="sqlite_manager_refresh_query">Refresh Query</string>
+    <string name="sqlite_manager_add">Add</string>
+    <string name="sqlite_manager_table_column_length_error">table column length is not equal to submitted values length</string>
+    <string name="sqlite_manager_all_columns_cant_be_empty">All columns can\'t be empty</string>
+    <string name="sqlite_manager_add_row_success">Row added Successfully</string>
+    <string name="sqlite_manager_add_row_error">Error adding Row</string>
+    <string name="sqlite_manager_add_row_dialog_title">Add Row</string>
+    <string name="sqlite_manager_add_row_dialog_message">Add row to %1$s table</string>
 </resources>
