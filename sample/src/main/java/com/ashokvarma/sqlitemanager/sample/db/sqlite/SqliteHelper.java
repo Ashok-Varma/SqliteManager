@@ -21,7 +21,7 @@ import java.util.List;
 public class SqliteHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database Name
     private static final String DATABASE_NAME = "TestDb";
@@ -41,6 +41,13 @@ public class SqliteHelper extends SQLiteOpenHelper {
     private static final String BOOK_KEY_ID = "id";
     private static final String BOOK_KEY_TITLE = "title";
     private static final String BOOK_KEY_AUTHOR = "author";
+    private static final String BOOK_KEY_SERIAL_NUMBER = "serial_number";
+    private static final String BOOK_KEY_PAGES = "pages";
+    private static final String BOOK_KEY_GENRE = "genre";
+    private static final String BOOK_KEY_AGE_MIN_LIMIT = "age_min";
+    private static final String BOOK_KEY_AGE_MAX_LIMIT = "age_max";
+    private static final String BOOK_KEY_SEQUEL_ID = "sequel_id";
+    private static final String BOOK_KEY_PREQUEL_ID = "prequel_id";
 
     public SqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -72,13 +79,23 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
     public void createTables(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + CONTACT_KEY_ID + " INTEGER PRIMARY KEY," + CONTACT_KEY_NAME + " TEXT,"
+                + CONTACT_KEY_ID + " INTEGER PRIMARY KEY,"
+                + CONTACT_KEY_NAME + " TEXT,"
                 + CONTACT_KEY_ADDR + " TEXT" + ")";
         String CREATE_BOOKS_TABLE = "CREATE TABLE " + TABLE_BOOKS + "("
-                + BOOK_KEY_ID + " INTEGER PRIMARY KEY," + BOOK_KEY_TITLE + " TEXT,"
-                + BOOK_KEY_AUTHOR + " TEXT" + ")";
+                + BOOK_KEY_ID + " INTEGER PRIMARY KEY,"
+                + BOOK_KEY_TITLE + " TEXT,"
+                + BOOK_KEY_AUTHOR + " TEXT,"
+                + BOOK_KEY_SERIAL_NUMBER + " TEXT,"
+                + BOOK_KEY_PAGES + " INTEGER,"
+                + BOOK_KEY_GENRE + " TEXT,"
+                + BOOK_KEY_AGE_MIN_LIMIT + " INTEGER,"
+                + BOOK_KEY_AGE_MAX_LIMIT + " INTEGER,"
+                + BOOK_KEY_SEQUEL_ID + " INTEGER,"
+                + BOOK_KEY_PREQUEL_ID + " INTEGER" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_BOOKS_TABLE);
+        populateTestDataAsync();
     }
 
     public void populateTestDataAsync() {
@@ -96,6 +113,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         int bookCount = 100;
         for (int i = 1; i <= bookCount; i++) {
             SqliteBook sqliteBook = new SqliteBook(i, i % 5 == 0 ? getTheBigText() : "Book " + i, i % 10 == 0 ? null : "Author " + (bookCount + 1 - i));
+            sqliteBook.setSerialNumber("serial" + i).setAgeMinLimit(i).setAgeMaxLimit(i + 10).setGenre("genre").setPrequelId(i + 1);
             addBook(sqliteBook);
         }
     }
@@ -122,6 +140,13 @@ public class SqliteHelper extends SQLiteOpenHelper {
         values.put(BOOK_KEY_ID, sqliteBook.getId()); // Book Name
         values.put(BOOK_KEY_TITLE, sqliteBook.getTitle()); // Book Name
         values.put(BOOK_KEY_AUTHOR, sqliteBook.getAuthor()); // Author Name
+        values.put(BOOK_KEY_SERIAL_NUMBER, sqliteBook.getSerialNumber()); // Serial Number
+        values.put(BOOK_KEY_PAGES, sqliteBook.getPages()); // Pages
+        values.put(BOOK_KEY_GENRE, sqliteBook.getGenre()); // Genre
+        values.put(BOOK_KEY_AGE_MIN_LIMIT, sqliteBook.getAgeMinLimit()); // Age limit min
+        values.put(BOOK_KEY_AGE_MAX_LIMIT, sqliteBook.getAgeMaxLimit()); // Age limit max
+        values.put(BOOK_KEY_SEQUEL_ID, sqliteBook.getSequelId()); // Sequel Id
+        values.put(BOOK_KEY_PREQUEL_ID, sqliteBook.getPrequelId()); // Prequel Id
 
         // Inserting Row
         db.insert(TABLE_BOOKS, null, values);

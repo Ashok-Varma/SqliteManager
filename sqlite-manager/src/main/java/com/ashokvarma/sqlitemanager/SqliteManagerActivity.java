@@ -22,8 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,12 +176,12 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         LayoutInflater inflater = this.getLayoutInflater();
         final ArrayList<TextInputEditText> editTextViews = new ArrayList<>(tableColumnNames.length);
 
-        ScrollView dialogView = new ScrollView(this);
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        int padding = getResources().getDimensionPixelSize(R.dimen.add_edit_item_holder_padding);
-        linearLayout.setPadding(padding, padding, padding, padding);
-        dialogView.addView(linearLayout);
+        final View dialogView = inflater.inflate(R.layout.sqlite_manager_add_edit_dialog_container, null);
+
+        LinearLayout linearLayout = (LinearLayout) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_container);
+        Button deleteButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_delete);
+        Button cancelButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_cancel);
+        Button updateButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_update);
 
         int index = 0;
         for (String currentColumnName : tableColumnNames) {
@@ -196,43 +196,52 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             index++;
         }
 
-        AlertDialog.Builder builder
+        if (!isEdit) {
+            // default params are fixed to edit case. So, need to change them only in add mode
+            deleteButton.setVisibility(View.GONE);
+            updateButton.setText(R.string.sqlite_manager_add);
+        }
+
+        final AlertDialog alertDialog
                 = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setTitle(isEdit ? R.string.sqlite_manager_update_row_dialog_title : R.string.sqlite_manager_add_row_dialog_title)
                 .setMessage(getString(isEdit ? R.string.sqlite_manager_update_row_dialog_message : R.string.sqlite_manager_add_row_dialog_message, tableName))
-                .setPositiveButton(isEdit ? R.string.sqlite_manager_update : R.string.sqlite_manager_add, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        final ArrayList<String> columnValues = new ArrayList<>(tableColumnNames.length);
-                        for (TextInputEditText currentEditText : editTextViews) {
-                            columnValues.add(currentEditText.getText().toString());
-                        }
-                        if (isEdit) {
-                            mSqliteManagerPresenter.updateRow(tableName, tableColumnNames, oldColumnValues, columnValues);
-                        } else {
-                            mSqliteManagerPresenter.addRow(tableName, tableColumnNames, columnValues);
-                        }
+                .create();
 
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(R.string.sqlite_manager_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                });
-
-        if (isEdit) {
-            builder.setNeutralButton(R.string.sqlite_manager_delete, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mSqliteManagerPresenter.deleteRow(tableName, tableColumnNames, oldColumnValues);
-                    dialog.dismiss();
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> columnValues = new ArrayList<>(tableColumnNames.length);
+                for (TextInputEditText currentEditText : editTextViews) {
+                    columnValues.add(currentEditText.getText().toString());
                 }
-            });
-        }
+                if (isEdit) {
+                    mSqliteManagerPresenter.updateRow(tableName, tableColumnNames, oldColumnValues, columnValues);
+                } else {
+                    mSqliteManagerPresenter.addRow(tableName, tableColumnNames, columnValues);
+                }
 
-        builder.show();
+                alertDialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSqliteManagerPresenter.deleteRow(tableName, tableColumnNames, oldColumnValues);
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override
