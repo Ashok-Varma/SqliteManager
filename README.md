@@ -2,7 +2,7 @@
 
 **get sample apk from [Google Play Store][googlePlayStoreLink]**
 
-<img src="https://raw.githubusercontent.com/Ashok-Varma/SharedPrefManager/master/sharedpref_320_5_compressed.gif" width="300" height="550" />
+<img src="https://raw.githubusercontent.com/Ashok-Varma/SqliteManager/master/sqlite_320_compressed.gif" width="300" height="550" />
 
 ## What is this library about?
 
