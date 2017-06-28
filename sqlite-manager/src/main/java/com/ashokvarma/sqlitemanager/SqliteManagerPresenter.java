@@ -126,6 +126,7 @@ class SqliteManagerPresenter {
         if (mIsCustomQuery) {
             if (mPreviousCustomQuery.toUpperCase().contains("ORDER BY")) {
                 getView().informErrorToUser(R.string.sqlite_manager_custom_query_contacins_order_by);
+                onRefreshClicked(selectedTableName);
                 return;
             } else {
                 SqliteResponseData sqliteResponseData = getSqliteResponseDataForCustomQuery(mPreviousCustomQuery, orderBy, isAscendingOrder);
@@ -303,8 +304,10 @@ class SqliteManagerPresenter {
         }
 
         if (mIsCustomQuery) {
+            getView().showCustomQueryView(mPreviousCustomQuery);
             getView().setAddFABVisible(false);
         } else {
+            getView().showTableSelectionView();
             getView().setAddFABVisible(true);
         }
     }

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +38,22 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     private View mSqliteManagerParent;
     private Toolbar mToolbar;
+
     private AppCompatSpinner mTableSelectionSpinner;
+
+    private View mTableSelectionContainer;
+    private View mCustomQueryContainer;
+    private TextView mCustomQueryText;
+    private ImageView mCustomQueryEdit;
+    private ImageView mCustomQueryClear;
+
     private View mErrorLayout;
     private TextView mErrorLayoutText;
+
     private View mTableLayout;
     private ColumnNameView mColumnNameView;
     private RecyclerView mTableLayoutRecyclerView;
+
     private FloatingActionButton mSqliteManagerAddFab;
 
     private View mActionCustomQuery;
@@ -64,6 +75,12 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mActionCustomQuery = findViewById(R.id.sqlite_manager_action_custom_query);
         mSqliteManagerAddFab = (FloatingActionButton) findViewById(R.id.sqlite_manager_add_fab);
 
+        mTableSelectionContainer = findViewById(R.id.sqlite_manager_table_selection_container);
+        mCustomQueryContainer = findViewById(R.id.sqlite_manager_custom_query_container);
+        mCustomQueryText = (TextView) findViewById(R.id.sqlite_manager_custom_query_text);
+        mCustomQueryEdit = (ImageView) findViewById(R.id.sqlite_manager_custom_query_edit);
+        mCustomQueryClear = (ImageView) findViewById(R.id.sqlite_manager_custom_query_clear);
+
         mToolbar = (Toolbar) findViewById(R.id.sqlite_manager_toolbar);
         setSupportActionBar(mToolbar);
 
@@ -75,6 +92,8 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mColumnNameView.setColumnHeaderSortChangeListener(this);
         mActionCustomQuery.setOnClickListener(this);
         mSqliteManagerAddFab.setOnClickListener(this);
+        mCustomQueryEdit.setOnClickListener(this);
+        mCustomQueryClear.setOnClickListener(this);
 
         mSqliteManagerPresenter.bindView(this);
     }
@@ -142,6 +161,20 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         } else {
             mSqliteManagerAddFab.hide();
         }
+    }
+
+    @Override
+    public void showCustomQueryView(String customQuery) {
+        mTableSelectionContainer.setVisibility(View.GONE);
+        mCustomQueryContainer.setVisibility(View.VISIBLE);
+
+        mCustomQueryText.setText(customQuery);
+    }
+
+    @Override
+    public void showTableSelectionView() {
+        mTableSelectionContainer.setVisibility(View.VISIBLE);
+        mCustomQueryContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -291,6 +324,11 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         } else if (v.getId() == R.id.sqlite_manager_add_fab) {
             String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
             mSqliteManagerPresenter.onAddFabClicked(selectedTableName, mColumnNameView.getTableColumnNames());
+        } else if (v.getId() == R.id.sqlite_manager_custom_query_edit) {
+            mSqliteManagerPresenter.onCustomQueryClicked();
+        } else if (v.getId() == R.id.sqlite_manager_custom_query_clear) {
+            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+            mSqliteManagerPresenter.fetchTableData(selectedTableName);
         }
     }
 

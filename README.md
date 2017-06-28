@@ -19,12 +19,12 @@ Based on your IDE you can import library in one of the following ways
 
 Gradle:
 ```groovy
-debugCompile 'com.ashokvarma.android:sqlite-manager:1.0.0RC2'
-releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.0.0RC2'
+debugCompile 'com.ashokvarma.android:sqlite-manager:1.0.0'
+releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.0.0'
 ```
 If you want this in library in production also then try this : 
 ```groovy
-compile 'com.ashokvarma.android:sqlite-manager:1.0.0RC2'
+compile 'com.ashokvarma.android:sqlite-manager:1.0.0'
 ```
 
 
@@ -33,14 +33,14 @@ or grab via Maven:
 <dependency>
   <groupId>com.ashokvarma.android</groupId>
   <artifactId>sqlite-manager</artifactId>
-  <version>1.0.0RC2</version>
+  <version>1.0.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 or Ivy:
 ```xml
-<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.0.0RC2'>
+<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.0.0'>
   <artifact name='$AID' ext='pom'></artifact>
 </dependency>
 ```
@@ -107,5 +107,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.0.0RC2/sqlite-manager-1.0.0RC2.aar
+[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.0.0/sqlite-manager-1.0.0.aar
 [googlePlayStoreLink]: https://play.google.com/store/apps/details?id=com.ashokvarma.sqlitemanager.sample

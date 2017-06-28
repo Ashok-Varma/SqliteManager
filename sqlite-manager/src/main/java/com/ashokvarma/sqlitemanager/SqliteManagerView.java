@@ -48,4 +48,8 @@ interface SqliteManagerView {
     void setAddFABVisible(boolean visible);
 
     void showAddEditRowDialog(boolean isEdit, String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues);
+
+    void showTableSelectionView();
+
+    void showCustomQueryView(String customQuery);
 }

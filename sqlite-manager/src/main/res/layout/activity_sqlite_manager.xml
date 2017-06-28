@@ -31,6 +31,7 @@
         tools:context="com.ashokvarma.sqlitemanager.SqliteManagerActivity">
 
         <LinearLayout
+            android:id="@+id/sqlite_manager_table_selection_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -50,6 +51,46 @@
                 android:layout_gravity="center_vertical"
                 android:padding="16dp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sqlite_manager_custom_query_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/sqlite_manager_custom_query_text"
+                style="@style/sqlite_manager_mtxt_subheading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:paddingStart="16dp"
+                tools:text="Select * " />
+
+            <ImageView
+                android:id="@+id/sqlite_manager_custom_query_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/ic_pencil_grey600_24dp" />
+
+            <ImageView
+                android:id="@+id/sqlite_manager_custom_query_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/ic_close_grey600_24dp" />
         </LinearLayout>
 
         <HorizontalScrollView
