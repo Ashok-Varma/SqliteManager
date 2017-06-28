@@ -14,10 +14,18 @@
     <string name="sqlite_manager_custom_query_contacins_order_by">Your Custom Query contains \"ORDER BY\" so can\'t reorder the data</string>
     <string name="sqlite_manager_refresh_query">Refresh Query</string>
     <string name="sqlite_manager_add">Add</string>
+    <string name="sqlite_manager_update">Update</string>
+    <string name="sqlite_manager_delete">Delete</string>
     <string name="sqlite_manager_table_column_length_error">table column length is not equal to submitted values length</string>
     <string name="sqlite_manager_all_columns_cant_be_empty">All columns can\'t be empty</string>
     <string name="sqlite_manager_add_row_success">Row added Successfully</string>
     <string name="sqlite_manager_add_row_error">Error adding Row</string>
+    <string name="sqlite_manager_delete_row_success">Row deleted Successfully</string>
+    <string name="sqlite_manager_delete_row_error">Error deleting Row</string>
+    <string name="sqlite_manager_update_row_success">Row updated Successfully</string>
+    <string name="sqlite_manager_update_row_error">Error updating Row</string>
     <string name="sqlite_manager_add_row_dialog_title">Add Row</string>
+    <string name="sqlite_manager_update_row_dialog_title">Update Row</string>
     <string name="sqlite_manager_add_row_dialog_message">Add row to %1$s table</string>
+    <string name="sqlite_manager_update_row_dialog_message">Update row in %1$s table</string>
 </resources>

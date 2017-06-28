@@ -3,6 +3,7 @@ package com.ashokvarma.sqlitemanager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.ViewHolder> {
 
     private List<SparseArray<String>> mColumnIndexToValuesArray;
+    private Listener mListener;
 
     TableRecyclerAdapter(@Nullable List<SparseArray<String>> columnIndexToValuesArray) {
         mColumnIndexToValuesArray = columnIndexToValuesArray;
@@ -32,6 +34,10 @@ class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.Vie
     void setData(List<SparseArray<String>> mColumnIndexToValuesArray) {
         this.mColumnIndexToValuesArray = mColumnIndexToValuesArray;
         notifyDataSetChanged();
+    }
+
+    public void setListener(Listener listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -60,6 +66,21 @@ class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.Vie
         ViewHolder(RowView itemView) {
             super(itemView);
             mRowView = itemView;
+
+            mRowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    int layoutPosition = getLayoutPosition();
+                    if (position != RecyclerView.NO_POSITION && mListener != null) {
+                        mListener.onColumnValueClicked(mColumnIndexToValuesArray.get(layoutPosition));
+                    }
+                }
+            });
         }
+    }
+
+    interface Listener {
+        void onColumnValueClicked(SparseArray<String> columnValues);
     }
 }

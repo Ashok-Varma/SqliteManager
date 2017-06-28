@@ -106,12 +106,20 @@ class SqliteManagerPresenter {
         }
     }
 
+    void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<String> columnValues) {
+        if (tableName == null || TextUtils.isEmpty(tableName)) {
+            getView().informErrorToUser(R.string.sqlite_manager_please_select_a_table);
+            return;
+        }
+        getView().showAddEditRowDialog(true, tableName, tableColumnNames, columnValues);
+    }
+
     void onAddFabClicked(@Nullable String tableName, String[] tableColumnNames) {
         if (tableName == null || TextUtils.isEmpty(tableName)) {
             getView().informErrorToUser(R.string.sqlite_manager_please_select_a_table);
             return;
         }
-        getView().showAddRowDialog(tableName, tableColumnNames);
+        getView().showAddEditRowDialog(false, tableName, tableColumnNames, null);
     }
 
     void onSortChangedOrderChanged(@Nullable String selectedTableName, @Nullable String orderBy, boolean isAscendingOrder) {
@@ -155,7 +163,6 @@ class SqliteManagerPresenter {
             return;
         }
 
-        String query = "INSERT INTO ".concat(tableName).concat(" ");
         String columnNameQuery = "(";
         String columnValueQuery = "(";
         int columnIndex = 0;
@@ -170,7 +177,7 @@ class SqliteManagerPresenter {
         if (columnNameQuery.endsWith(",")) {
             columnNameQuery = columnNameQuery.substring(0, columnNameQuery.length() - 1).concat(")");
             columnValueQuery = columnValueQuery.substring(0, columnValueQuery.length() - 1).concat(")");
-            query = query.concat(columnNameQuery).concat(" VALUES ").concat(columnValueQuery);
+            String query = "INSERT INTO ".concat(tableName).concat(" ").concat(columnNameQuery).concat(" VALUES ").concat(columnValueQuery);
             SqliteResponseData sqliteResponseData = getSqliteResponseDataFromQuery(query, null);
             if (sqliteResponseData.isQuerySuccess()) {
                 getView().informErrorToUser(R.string.sqlite_manager_add_row_success);
@@ -185,6 +192,88 @@ class SqliteManagerPresenter {
         } else {
             getView().informErrorToUser(R.string.sqlite_manager_all_columns_cant_be_empty);
             return;
+        }
+    }
+
+    void deleteRow(String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues) {
+        if (tableColumnNames.length != oldColumnValues.size()) {
+            getView().informErrorToUser(R.string.sqlite_manager_table_column_length_error);
+            return;
+        }
+
+        String whereCondition = getWhereCondition(tableColumnNames, oldColumnValues);
+
+        if (whereCondition != null) {
+            String query = "DELETE FROM ".concat(tableName).concat(" WHERE ").concat(whereCondition);
+            SqliteResponseData sqliteResponseData = getSqliteResponseDataFromQuery(query, null);
+            if (sqliteResponseData.isQuerySuccess()) {
+                getView().informErrorToUser(R.string.sqlite_manager_delete_row_success);
+                onRefreshClicked(tableName);
+            } else {
+                if (sqliteResponseData.getThrowable() != null) {
+                    getView().informErrorToUser(sqliteResponseData.getThrowable().getMessage());
+                } else {
+                    getView().informErrorToUser(R.string.sqlite_manager_delete_row_error);
+                }
+            }
+        } else {
+            getView().informErrorToUser(R.string.sqlite_manager_all_columns_cant_be_empty);
+            return;
+        }
+    }
+
+    void updateRow(String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues, ArrayList<String> columnValues) {
+        if (tableColumnNames.length != oldColumnValues.size() || tableColumnNames.length != columnValues.size()) {
+            getView().informErrorToUser(R.string.sqlite_manager_table_column_length_error);
+            return;
+        }
+        String whereCondition = getWhereCondition(tableColumnNames, oldColumnValues);
+
+        String updateQuery = "";
+        int columnIndex = 0;
+        for (String currentColumnValue : columnValues) {
+            String columnName = tableColumnNames[columnIndex];
+            columnIndex++;
+            if (!TextUtils.isEmpty(currentColumnValue)) {
+                updateQuery = updateQuery.concat(columnName).concat(" = \'").concat(currentColumnValue).concat("\', ");
+            }
+        }
+
+        if (!TextUtils.isEmpty(updateQuery) && whereCondition != null) {
+            updateQuery = updateQuery.substring(0, updateQuery.length() - 2).concat(" ");
+            String query = "UPDATE ".concat(tableName).concat(" SET ").concat(updateQuery).concat(" WHERE ").concat(whereCondition);
+            SqliteResponseData sqliteResponseData = getSqliteResponseDataFromQuery(query, null);
+            if (sqliteResponseData.isQuerySuccess()) {
+                getView().informErrorToUser(R.string.sqlite_manager_update_row_success);
+                onRefreshClicked(tableName);
+            } else {
+                if (sqliteResponseData.getThrowable() != null) {
+                    getView().informErrorToUser(sqliteResponseData.getThrowable().getMessage());
+                } else {
+                    getView().informErrorToUser(R.string.sqlite_manager_update_row_error);
+                }
+            }
+        } else {
+            getView().informErrorToUser(R.string.sqlite_manager_all_columns_cant_be_empty);
+            return;
+        }
+
+    }
+
+    private String getWhereCondition(String[] tableColumnNames, SparseArray<String> columnValues) {
+        String whereCondition = "";
+        int columnIndex = 0;
+        for (String currentColumnName : tableColumnNames) {
+            String columnValue = columnValues.get(columnIndex);
+            columnIndex++;
+            if (columnValue != null) {
+                whereCondition = whereCondition.concat(currentColumnName).concat("=\'").concat(columnValue).concat("\'").concat(" AND ");
+            }
+        }
+        if (whereCondition.endsWith(" AND ")) {
+            return whereCondition.substring(0, whereCondition.length() - 5);
+        } else {
+            return null;
         }
     }
 

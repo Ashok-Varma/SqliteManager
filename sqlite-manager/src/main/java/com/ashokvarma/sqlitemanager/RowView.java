@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,27 +19,27 @@ import java.util.ArrayList;
  * @see LinearLayout
  * @since 18 Jun 2017
  */
-class RowView extends LinearLayout {
+class RowView extends FrameLayout {
 
     private final int mColumnCount;
     private final ArrayList<TextView> mTextViewList;
+    private final LinearLayout mRowViewContainer;
     private SparseArray<String> mColumnIndexToValues;
 
     RowView(Context context, int columnCount) {
         super(context);
 
-        setOrientation(HORIZONTAL);
-
-//        TypedValue outValue = new TypedValue();
-//        getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-//        setBackgroundResource(outValue.resourceId);
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_background_white));
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.sqlite_manager_selectable_horizontal_linear_layout, this, true);
+        mRowViewContainer = (LinearLayout) findViewById(R.id.sqlite_manager_row_view_container);
 
         mColumnCount = columnCount;
         mTextViewList = new ArrayList<>(columnCount);
         for (int i = 0; i < columnCount; i++) {
             TextView textView = getTextView();
             mTextViewList.add(textView);
-            addView(textView);
+            mRowViewContainer.addView(textView);
         }
     }
 

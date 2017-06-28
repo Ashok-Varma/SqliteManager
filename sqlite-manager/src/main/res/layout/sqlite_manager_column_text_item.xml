@@ -4,7 +4,6 @@
     style="@style/sqlite_manager_mtxt_body1_secondary"
     android:layout_width="150dp"
     android:layout_height="match_parent"
-    android:background="@color/sqlite_manager_background_white"
     android:ellipsize="end"
     android:maxLines="5"
     android:orientation="vertical"

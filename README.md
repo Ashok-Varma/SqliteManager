@@ -19,12 +19,12 @@ Based on your IDE you can import library in one of the following ways
 
 Gradle:
 ```groovy
-debugCompile 'com.ashokvarma.android:sqlite-manager:0.9.4'
-releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:0.9.4'
+debugCompile 'com.ashokvarma.android:sqlite-manager:1.0.0RC1'
+releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.0.0RC1'
 ```
 If you want this in library in production also then try this : 
 ```groovy
-compile 'com.ashokvarma.android:sqlite-manager:0.9.4'
+compile 'com.ashokvarma.android:sqlite-manager:1.0.0RC1'
 ```
 
 
@@ -33,14 +33,14 @@ or grab via Maven:
 <dependency>
   <groupId>com.ashokvarma.android</groupId>
   <artifactId>sqlite-manager</artifactId>
-  <version>0.9.4</version>
+  <version>1.0.0RC1</version>
   <type>pom</type>
 </dependency>
 ```
 
 or Ivy:
 ```xml
-<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='0.9.4'>
+<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.0.0RC1'>
   <artifact name='$AID' ext='pom'></artifact>
 </dependency>
 ```

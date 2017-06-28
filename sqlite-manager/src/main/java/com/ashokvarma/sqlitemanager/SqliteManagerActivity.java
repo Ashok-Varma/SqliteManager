@@ -30,7 +30,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteManagerActivity extends AppCompatActivity implements SqliteManagerView, AdapterView.OnItemSelectedListener, ColumnNameView.ColumnHeaderSortChangeListener, View.OnClickListener {
+public class SqliteManagerActivity extends AppCompatActivity implements SqliteManagerView, AdapterView.OnItemSelectedListener, ColumnNameView.ColumnHeaderSortChangeListener, View.OnClickListener, TableRecyclerAdapter.Listener {
 
     private SqliteManagerPresenter mSqliteManagerPresenter;
     private TableRecyclerAdapter mTableRecyclerAdapter;
@@ -68,6 +68,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         setSupportActionBar(mToolbar);
 
         mTableRecyclerAdapter = new TableRecyclerAdapter(null);
+        mTableRecyclerAdapter.setListener(this);
         mTableLayoutRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mTableLayoutRecyclerView.setAdapter(mTableRecyclerAdapter);
         mTableSelectionSpinner.setOnItemSelectedListener(this);
@@ -131,7 +132,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     @Override
     public void informErrorToUser(String error) {
-        Snackbar.make(mSqliteManagerParent, error, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(mSqliteManagerParent, error, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -171,7 +172,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     }
 
     @Override
-    public void showAddRowDialog(final String tableName, final String[] tableColumnNames) {
+    public void showAddEditRowDialog(final boolean isEdit, final String tableName, final String[] tableColumnNames, final SparseArray<String> oldColumnValues) {
         LayoutInflater inflater = this.getLayoutInflater();
         final ArrayList<TextInputEditText> editTextViews = new ArrayList<>(tableColumnNames.length);
 
@@ -182,25 +183,36 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         linearLayout.setPadding(padding, padding, padding, padding);
         dialogView.addView(linearLayout);
 
+        int index = 0;
         for (String currentColumnName : tableColumnNames) {
             View columnView = inflater.inflate(R.layout.sqlite_manager_add_edit_dialog_item, null);
             ((TextInputLayout) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_text_input_layout)).setHint(currentColumnName);
-            editTextViews.add(((TextInputEditText) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text)));
+            TextInputEditText currentInputEditText = (TextInputEditText) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text);
+            editTextViews.add(currentInputEditText);
             linearLayout.addView(columnView);
+            if (oldColumnValues != null) {
+                currentInputEditText.setText(oldColumnValues.get(index));
+            }
+            index++;
         }
 
-        new AlertDialog
-                .Builder(this)
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this)
                 .setView(dialogView)
-                .setTitle(R.string.sqlite_manager_add_row_dialog_title)
-                .setMessage(getString(R.string.sqlite_manager_add_row_dialog_message, tableName))
-                .setPositiveButton(R.string.sqlite_manager_add, new DialogInterface.OnClickListener() {
+                .setTitle(isEdit ? R.string.sqlite_manager_update_row_dialog_title : R.string.sqlite_manager_add_row_dialog_title)
+                .setMessage(getString(isEdit ? R.string.sqlite_manager_update_row_dialog_message : R.string.sqlite_manager_add_row_dialog_message, tableName))
+                .setPositiveButton(isEdit ? R.string.sqlite_manager_update : R.string.sqlite_manager_add, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final ArrayList<String> columnValues = new ArrayList<>(tableColumnNames.length);
                         for (TextInputEditText currentEditText : editTextViews) {
                             columnValues.add(currentEditText.getText().toString());
                         }
-                        mSqliteManagerPresenter.addRow(tableName, tableColumnNames, columnValues);
+                        if (isEdit) {
+                            mSqliteManagerPresenter.updateRow(tableName, tableColumnNames, oldColumnValues, columnValues);
+                        } else {
+                            mSqliteManagerPresenter.addRow(tableName, tableColumnNames, columnValues);
+                        }
+
                         dialog.dismiss();
                     }
                 })
@@ -208,8 +220,19 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
                     }
-                })
-                .show();
+                });
+
+        if (isEdit) {
+            builder.setNeutralButton(R.string.sqlite_manager_delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mSqliteManagerPresenter.deleteRow(tableName, tableColumnNames, oldColumnValues);
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        builder.show();
     }
 
     @Override
@@ -277,5 +300,11 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onColumnValueClicked(SparseArray<String> columnValues) {
+        String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+        mSqliteManagerPresenter.onColumnValueClicked(selectedTableName, mColumnNameView.getTableColumnNames(), columnValues);
     }
 }
