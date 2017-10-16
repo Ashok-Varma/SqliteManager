@@ -33,20 +33,20 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //Third party database ORM's
-    compile "android.arch.persistence.room:runtime:${rootProject.roomDbVersion}"
+    implementation "android.arch.persistence.room:runtime:${rootProject.roomDbVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${rootProject.roomDbVersion}"
 
     // library dependencies
-    compile project(':sqlite-manager')
+    implementation project(':sqlite-manager')
 //    debugCompile project(':sqlite-manager')
 //    releaseCompile project(':sqlite-manager-no-op')
 }
