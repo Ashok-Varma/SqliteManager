@@ -18,7 +18,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface BookDao {
 
     @Query("select * from Book where id = :id")
-    User loadUserById(int id);
+    Book loadUserById(int id);
 
     @Query("SELECT * FROM Book " +
             "INNER JOIN Loan ON Loan.book_id = Book.id " +
