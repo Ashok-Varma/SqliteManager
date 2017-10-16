@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'release'
             keyPassword 'release'
-            storeFile file('/Users/ashok/Desktop/Projects/Android/MyPrecious/Projects/SqliteManager/sample/release.jks')
+            storeFile file('release.jks')
             storePassword 'release'
         }
     }
