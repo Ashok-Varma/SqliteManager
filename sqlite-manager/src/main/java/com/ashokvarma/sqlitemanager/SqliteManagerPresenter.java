@@ -27,6 +27,7 @@ class SqliteManagerPresenter {
     private static final String TABLE_FETCH_QUERY = "SELECT name _id FROM sqlite_master WHERE type ='table'";
 
     private boolean mIsCustomQuery;// it says if the current displayed data is from custom Query ??
+    private SqliteResponseData mCurrentsqliteResponseData;// current show data response
     private String mPreviousCustomQuery;
 
 
@@ -104,6 +105,14 @@ class SqliteManagerPresenter {
             SqliteResponseData sqliteResponseData = getSqliteResponseDataForSelectedTable(selectedTableName, null, true);
             displayData(sqliteResponseData, false, true);
         }
+    }
+
+    void onExportResultAsJsonClicked() {
+        SqliteManagerUtils.shareSqliteResponseDataAsJson(getView().getViewContext(), mCurrentsqliteResponseData);
+    }
+
+    void onExportResultAsCSVClicked() {
+        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData);
     }
 
     void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<String> columnValues) {
@@ -279,6 +288,7 @@ class SqliteManagerPresenter {
     }
 
     private void displayData(@NonNull SqliteResponseData sqliteResponseData, boolean isCustomQuery, boolean updateColumnNames) {
+        mCurrentsqliteResponseData = sqliteResponseData;
         if (sqliteResponseData.isQuerySuccess()) {
             getView().showContentView();
             this.mIsCustomQuery = isCustomQuery;// save as custom query only if this is success

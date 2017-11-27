@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
 
@@ -36,10 +36,10 @@ ext {
     compileSdkVersion = 26
     buildToolsVersion = '26.0.2'
 
-    supportLibVersion = '26.1.0'
+    supportLibVersion = '27.0.1'
 
-    roomDbVersion = "1.0.0-beta2"
+    roomDbVersion = "1.0.0"
 
-    LIBRARY_VERSION_NAME = "1.0.2"
-    LIBRARY_VERSION_CODE = 10
+    LIBRARY_VERSION_NAME = "1.1.0"
+    LIBRARY_VERSION_CODE = 11
 }

@@ -2,6 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_export_result"
+        android:icon="@drawable/ic_share_white_24dp"
+        android:title="@string/sqlite_manager_export_result"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_export_result_as_json"
+                android:title="@string/sqlite_manager_export_result_as_json"
+                android:visible="true"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/action_export_result_as_csv"
+                android:title="@string/sqlite_manager_export_result_as_csv"
+                android:visible="true"
+                app:showAsAction="always" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/action_query_refresh"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/sqlite_manager_refresh_query"

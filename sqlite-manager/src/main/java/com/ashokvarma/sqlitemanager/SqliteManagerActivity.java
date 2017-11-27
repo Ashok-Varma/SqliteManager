@@ -346,6 +346,14 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             mSqliteManagerPresenter.onRefreshClicked(selectedTableName);
             return true;
         }
+        if (item.getItemId() == R.id.action_export_result_as_csv) {
+            mSqliteManagerPresenter.onExportResultAsCSVClicked();
+            return true;
+        }
+        if (item.getItemId() == R.id.action_export_result_as_json) {
+            mSqliteManagerPresenter.onExportResultAsJsonClicked();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

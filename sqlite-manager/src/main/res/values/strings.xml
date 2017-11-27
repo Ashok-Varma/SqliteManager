@@ -13,6 +13,9 @@
     <string name="sqlite_manager_custom_query_hint">Enter the SQL query you need to perform</string>
     <string name="sqlite_manager_custom_query_contacins_order_by">Your Custom Query contains \"ORDER BY\" so can\'t reorder the data</string>
     <string name="sqlite_manager_refresh_query">Refresh Query</string>
+    <string name="sqlite_manager_export_result">Export Result</string>
+    <string name="sqlite_manager_export_result_as_json">Export as Json </string>
+    <string name="sqlite_manager_export_result_as_csv">Export as CSV</string>
     <string name="sqlite_manager_add">Add</string>
     <string name="sqlite_manager_update">Update</string>
     <string name="sqlite_manager_delete">Delete</string>
