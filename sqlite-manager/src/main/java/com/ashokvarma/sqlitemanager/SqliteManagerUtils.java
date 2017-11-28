@@ -74,7 +74,7 @@ class SqliteManagerUtils {
         return resultSet;
     }
 
-    static void shareSqliteResponseDataAsCsvFile(AppCompatActivity context, SqliteResponseData sqliteResponseData, String CSVFileShareAuthority) {
+    static void shareSqliteResponseDataAsCsvFile(AppCompatActivity context, SqliteResponseData sqliteResponseData, String selectedTableName, String CSVFileShareAuthority) {
         if (!sqliteResponseData.isQuerySuccess() || CSVFileShareAuthority == null || CSVFileShareAuthority.trim().length() == 0) {
             return;
         }
@@ -108,9 +108,11 @@ class SqliteManagerUtils {
             csvString.append("\n");
         }
 
-        String csvFileName = "sqlite_manager_dump.csv";
+        String csvFileName = "sqlite_export" + (selectedTableName == null ? "" : "_" + selectedTableName) + ".csv";
         try {
-            File CSVFile = new File(context.getFilesDir(), csvFileName);
+            File CSVFileDir = new File(context.getFilesDir(), "sqliteManager");
+            CSVFileDir.mkdir();
+            File CSVFile = new File(CSVFileDir, csvFileName);
             CSVFile.createNewFile();
 
             FileOutputStream fileOutputStream = new FileOutputStream(CSVFile);

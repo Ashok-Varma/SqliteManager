@@ -21,12 +21,12 @@ Based on your IDE you can import library in one of the following ways
 
 Gradle:
 ```groovy
-debugCompile 'com.ashokvarma.android:sqlite-manager:1.1.1'
-releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.1.1'
+debugCompile 'com.ashokvarma.android:sqlite-manager:1.1.2'
+releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.1.2'
 ```
 If you want this in library in production also then try this : 
 ```groovy
-compile 'com.ashokvarma.android:sqlite-manager:1.1.1'
+compile 'com.ashokvarma.android:sqlite-manager:1.1.2'
 ```
 
 
@@ -35,14 +35,14 @@ or grab via Maven:
 <dependency>
   <groupId>com.ashokvarma.android</groupId>
   <artifactId>sqlite-manager</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <type>pom</type>
 </dependency>
 ```
 
 or Ivy:
 ```xml
-<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.1.1'>
+<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.1.2'>
   <artifact name='$AID' ext='pom'></artifact>
 </dependency>
 ```
@@ -114,7 +114,7 @@ To Use export as CSV feature. need to define FileProvider in your app manifest.
 <paths>
     <files-path
         name="sqlite_csv_dump"
-        path="/" />
+        path="sqliteManager/" />
 </paths>
 ```
 4. while launching sqlite manager pass application_id
@@ -122,14 +122,14 @@ To Use export as CSV feature. need to define FileProvider in your app manifest.
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), BuildConfig.APPLICATION_ID);
 ```
 #### 2. If you already have a file-provider in your manifest
-1. add files-path as below to existing paths in your xml file. (if one files-path with path="/" not present)
+1. add files-path mentioned below to existing paths in your xml file.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <.........your current paths, caches........>
+    <!-- -.-.-.-.-.-.-.-.-.-.- your current paths, caches ..etc -.-.-.-.-.-.-.-.-.-.- -->
     <files-path
         name="sqlite_csv_dump"
-        path="/" />
+        path="sqliteManager/" />
 </paths>
 ```
 2. while launching sqlite manager pass the authorities declared in your manifest
@@ -155,5 +155,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.1.1/sqlite-manager-1.1.1.aar
+[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.1.2/sqlite-manager-1.1.2.aar
 [googlePlayStoreLink]: https://play.google.com/store/apps/details?id=com.ashokvarma.sqlitemanager.sample

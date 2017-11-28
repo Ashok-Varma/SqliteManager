@@ -113,8 +113,8 @@ class SqliteManagerPresenter {
         SqliteManagerUtils.shareSqliteResponseDataAsJson(getView().getViewContext(), mCurrentsqliteResponseData);
     }
 
-    void onExportResultAsCSVClicked() {
-        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData, mCSVFileShareAuthority);
+    void onExportResultAsCSVClicked(String selectedTableName) {
+        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData, selectedTableName, mCSVFileShareAuthority);
     }
 
     void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<String> columnValues) {

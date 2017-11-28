@@ -349,7 +349,8 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             return true;
         }
         if (item.getItemId() == R.id.action_export_result_as_csv) {
-            mSqliteManagerPresenter.onExportResultAsCSVClicked();
+            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+            mSqliteManagerPresenter.onExportResultAsCSVClicked(selectedTableName);
             return true;
         }
         if (item.getItemId() == R.id.action_export_result_as_json) {

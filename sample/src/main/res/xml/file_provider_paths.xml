@@ -2,5 +2,5 @@
 <paths>
     <files-path
         name="sqlite_csv_dump"
-        path="/" />
+        path="sqliteManager/" />
 </paths>
