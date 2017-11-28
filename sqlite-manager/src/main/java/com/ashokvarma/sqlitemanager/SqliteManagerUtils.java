@@ -74,8 +74,8 @@ class SqliteManagerUtils {
         return resultSet;
     }
 
-    static void shareSqliteResponseDataAsCsvFile(AppCompatActivity context, SqliteResponseData sqliteResponseData) {
-        if (!sqliteResponseData.isQuerySuccess()) {
+    static void shareSqliteResponseDataAsCsvFile(AppCompatActivity context, SqliteResponseData sqliteResponseData, String CSVFileShareAuthority) {
+        if (!sqliteResponseData.isQuerySuccess() || CSVFileShareAuthority == null || CSVFileShareAuthority.trim().length() == 0) {
             return;
         }
 
@@ -118,7 +118,7 @@ class SqliteManagerUtils {
             fileOutputStream.close();
 
             // generate URI, defined authority as the application ID in the Manifest
-            Uri uriToCSVFIle = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, CSVFile);
+            Uri uriToCSVFIle = FileProvider.getUriForFile(context, CSVFileShareAuthority, CSVFile);
 
             Intent shareIntent =
                     ShareCompat.IntentBuilder

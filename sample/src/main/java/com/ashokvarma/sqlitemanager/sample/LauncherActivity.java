@@ -49,9 +49,9 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.launch_sqlite_manager_button) {
-            SqliteManager.launchSqliteManager(this, sqliteDataRetriever);
+            SqliteManager.launchSqliteManager(this, sqliteDataRetriever, BuildConfig.APPLICATION_ID);
         } else if (v.getId() == R.id.launch_sqlite_manager_room_button) {
-            SqliteManager.launchSqliteManager(this, roomSqliteDataRetriever);
+            SqliteManager.launchSqliteManager(this, roomSqliteDataRetriever, BuildConfig.APPLICATION_ID);
         } else if (v.getId() == R.id.clear_data_button) {
             sqliteHelper.clearTables();
             DatabaseInitializer.clearAsync(appDatabase);

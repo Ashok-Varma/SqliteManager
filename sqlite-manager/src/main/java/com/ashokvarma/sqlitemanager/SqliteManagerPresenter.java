@@ -20,8 +20,9 @@ import java.util.List;
  * @since 17 Jun 2017
  */
 class SqliteManagerPresenter {
-    private SqliteResponseRetriever mSqliteResponseRetriever;
-    private SqliteDataRetriever mSqliteDataRetriever;
+    private final SqliteResponseRetriever mSqliteResponseRetriever;
+    private final String mCSVFileShareAuthority;
+    private final SqliteDataRetriever mSqliteDataRetriever;
     private SqliteManagerView mSqliteManagerView;
     private ArrayList<String> mTableNames = new ArrayList<>();
     private static final String TABLE_FETCH_QUERY = "SELECT name _id FROM sqlite_master WHERE type ='table'";
@@ -31,8 +32,9 @@ class SqliteManagerPresenter {
     private String mPreviousCustomQuery;
 
 
-    SqliteManagerPresenter(SqliteDataRetriever sqliteDataRetriever) {
+    SqliteManagerPresenter(SqliteDataRetriever sqliteDataRetriever, String csvFileShareAuthority) {
         mSqliteDataRetriever = sqliteDataRetriever;
+        mCSVFileShareAuthority = csvFileShareAuthority;
         mSqliteResponseRetriever = new SqliteResponseRetriever(mSqliteDataRetriever);
     }
 
@@ -112,7 +114,7 @@ class SqliteManagerPresenter {
     }
 
     void onExportResultAsCSVClicked() {
-        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData);
+        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData, mCSVFileShareAuthority);
     }
 
     void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<String> columnValues) {

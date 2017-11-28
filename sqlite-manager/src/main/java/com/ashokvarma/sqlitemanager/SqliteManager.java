@@ -14,9 +14,13 @@ public class SqliteManager {
 
     static SqliteDataRetriever mSqliteDataRetriever;
 
-    public static void launchSqliteManager(Context context, SqliteDataRetriever sqliteDataRetriever) {
+    public static void launchSqliteManager(Context context, SqliteDataRetriever sqliteDataRetriever, String csvFileShareAuthority) {
         mSqliteDataRetriever = sqliteDataRetriever;
-        context.startActivity(new Intent(context, SqliteManagerActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        Intent sqliteManagerIntent = new Intent(context, SqliteManagerActivity.class);
+        if (csvFileShareAuthority != null && csvFileShareAuthority.trim().length() > 0) {
+            sqliteManagerIntent.putExtra(SqliteManagerActivity.CSV_FILE_SHARE_AUTHORITY, csvFileShareAuthority);
+        }
+        context.startActivity(sqliteManagerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     static void clearReferences() {

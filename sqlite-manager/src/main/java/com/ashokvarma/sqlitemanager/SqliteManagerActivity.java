@@ -58,12 +58,14 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     private View mActionCustomQuery;
 
+    public static final String CSV_FILE_SHARE_AUTHORITY = "csv_file_share_authority";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sqlite_manager);
 
-        mSqliteManagerPresenter = new SqliteManagerPresenter(SqliteManager.mSqliteDataRetriever);
+        mSqliteManagerPresenter = new SqliteManagerPresenter(SqliteManager.mSqliteDataRetriever, getIntent().getStringExtra(CSV_FILE_SHARE_AUTHORITY));
 
         mSqliteManagerParent = findViewById(R.id.sqlite_manager_parent);
         mTableSelectionSpinner = (AppCompatSpinner) findViewById(R.id.sqlite_manager_table_selection_spinner);

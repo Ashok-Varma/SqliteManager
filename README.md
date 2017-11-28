@@ -21,12 +21,12 @@ Based on your IDE you can import library in one of the following ways
 
 Gradle:
 ```groovy
-debugCompile 'com.ashokvarma.android:sqlite-manager:1.1.0'
-releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.1.0'
+debugCompile 'com.ashokvarma.android:sqlite-manager:1.1.1'
+releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.1.1'
 ```
 If you want this in library in production also then try this : 
 ```groovy
-compile 'com.ashokvarma.android:sqlite-manager:1.1.0'
+compile 'com.ashokvarma.android:sqlite-manager:1.1.1'
 ```
 
 
@@ -35,14 +35,14 @@ or grab via Maven:
 <dependency>
   <groupId>com.ashokvarma.android</groupId>
   <artifactId>sqlite-manager</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <type>pom</type>
 </dependency>
 ```
 
 or Ivy:
 ```xml
-<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.1.0'>
+<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.1.1'>
   <artifact name='$AID' ext='pom'></artifact>
 </dependency>
 ```
@@ -88,9 +88,52 @@ Here is an example interface if SqliteOpenHelper is used (for other library impl
 Then just pass the interface instance with the context to launchSqliteManager method
 
 ```java
-    SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper));
+    SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), null);
 ```
 
+###CSV Export feature 
+#### 1. If you don't have file-provider in your manifest
+To Use export as CSV feature. need to define FileProvider in your app manifest
+in your manifest add this section under application tag 
+```xml
+<provider
+    android:name="android.support.v4.content.FileProvider"
+    android:authorities="${applicationId}"
+    android:exported="false"
+    android:grantUriPermissions="true">
+
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_provider_paths" />
+</provider>
+```
+and create a new xml file with name file_provider_paths and add files path as below in the manifest
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path
+        name="sqlite_csv_dump"
+        path="/" />
+</paths>
+```
+and while launching sqlite manager pass application_id
+```java
+    SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), BuildConfig.APPLICATION_ID);
+```
+#### 2. If you already have a file-provider in your manifest
+just open your existing paths xml and add this
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <files-path
+        name="sqlite_csv_dump"
+        path="/" />
+</paths>
+```
+and while launching sqlite manager pass the authorities declared in your manifest
+```java
+    SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), "authority_string_mentioned_in_your_manifest");
+```
 ## License
 
 ```
@@ -109,5 +152,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.1.0/sqlite-manager-1.1.0.aar
+[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.1.1/sqlite-manager-1.1.1.aar
 [googlePlayStoreLink]: https://play.google.com/store/apps/details?id=com.ashokvarma.sqlitemanager.sample
