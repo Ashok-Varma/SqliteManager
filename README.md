@@ -91,10 +91,10 @@ Then just pass the interface instance with the context to launchSqliteManager me
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), null);
 ```
 
-###CSV Export feature 
+### CSV Export feature 
+To Use export as CSV feature. need to define FileProvider in your app manifest.
 #### 1. If you don't have file-provider in your manifest
-To Use export as CSV feature. need to define FileProvider in your app manifest
-in your manifest add this section under application tag 
+1. Add this section under application tag in your manifest
 ```xml
 <provider
     android:name="android.support.v4.content.FileProvider"
@@ -107,7 +107,8 @@ in your manifest add this section under application tag
         android:resource="@xml/file_provider_paths" />
 </provider>
 ```
-and create a new xml file with name file_provider_paths and add files path as below in the manifest
+2. create a new xml file with name file_provider_paths 
+3. add files-path in xml as below in the manifest
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
@@ -116,24 +117,26 @@ and create a new xml file with name file_provider_paths and add files path as be
         path="/" />
 </paths>
 ```
-and while launching sqlite manager pass application_id
+4. while launching sqlite manager pass application_id
 ```java
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), BuildConfig.APPLICATION_ID);
 ```
 #### 2. If you already have a file-provider in your manifest
-just open your existing paths xml and add this
+1. add files-path as below to existing paths in your xml file. (if one files-path with path="/" not present)
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+    <.........your current paths, caches........>
     <files-path
         name="sqlite_csv_dump"
         path="/" />
 </paths>
 ```
-and while launching sqlite manager pass the authorities declared in your manifest
+2. while launching sqlite manager pass the authorities declared in your manifest
 ```java
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), "authority_string_mentioned_in_your_manifest");
 ```
+
 ## License
 
 ```
