@@ -41,13 +41,13 @@ interface SqliteManagerView {
 
     void updateColumnNames(String[] columnNames);
 
-    void displayRows(List<SparseArray<String>> columnIndexToValuesArray);
+    void displayRows(List<SparseArray<Object>> columnIndexToValuesArray);
 
     void showCustomQueryDialog(String previousCustomQuery);
 
     void setAddFABVisible(boolean visible);
 
-    void showAddEditRowDialog(boolean isEdit, String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues);
+    void showAddEditRowDialog(boolean isEdit, String tableName, String[] tableColumnNames, SparseArray<Object> oldColumnValues);
 
     void showTableSelectionView();
 

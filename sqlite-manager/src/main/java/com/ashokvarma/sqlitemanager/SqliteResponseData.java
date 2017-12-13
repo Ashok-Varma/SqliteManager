@@ -14,12 +14,14 @@ import java.util.List;
 class SqliteResponseData {
     private final int mColumnCount;
     private final String[] mTableColumnNames;
-    private final List<SparseArray<String>> mColumnIndexToValuesArray;
+    private final int[] mTableColumnTypes;
+    private final List<SparseArray<Object>> mColumnIndexToValuesArray;
     private final Throwable mThrowable;
     private final boolean mQuerySuccess;
 
-    SqliteResponseData(int columnCount, String[] tableColumnNames, List<SparseArray<String>> columnIndexToValuesArray) {
+    SqliteResponseData(int columnCount, String[] tableColumnNames, int[] tableColumnTypes, List<SparseArray<Object>> columnIndexToValuesArray) {
         this.mTableColumnNames = tableColumnNames;
+        this.mTableColumnTypes = tableColumnTypes;
         this.mColumnCount = columnCount;
         this.mColumnIndexToValuesArray = columnIndexToValuesArray;
         this.mQuerySuccess = true;
@@ -29,6 +31,7 @@ class SqliteResponseData {
     SqliteResponseData(Throwable throwable) {
         this.mColumnCount = -1;
         this.mTableColumnNames = null;
+        this.mTableColumnTypes = null;
         this.mColumnIndexToValuesArray = null;
         this.mThrowable = throwable;
         this.mQuerySuccess = false;
@@ -43,7 +46,7 @@ class SqliteResponseData {
         return mColumnCount;
     }
 
-    List<SparseArray<String>> getColumnIndexToValuesArray() {
+    List<SparseArray<Object>> getColumnIndexToValuesArray() {
         return mColumnIndexToValuesArray;
     }
 

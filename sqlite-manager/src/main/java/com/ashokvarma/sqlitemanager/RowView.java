@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class description
@@ -24,7 +25,7 @@ class RowView extends FrameLayout {
     private final int mColumnCount;
     private final ArrayList<TextView> mTextViewList;
     private final LinearLayout mRowViewContainer;
-    private SparseArray<String> mColumnIndexToValues;
+    private SparseArray<Object> mColumnIndexToValues;
 
     RowView(Context context, int columnCount) {
         super(context);
@@ -47,7 +48,7 @@ class RowView extends FrameLayout {
         return (TextView) LayoutInflater.from(getContext()).inflate(R.layout.sqlite_manager_column_text_item, this, false);
     }
 
-    void setData(SparseArray<String> columnIndexToValues) {
+    void setData(SparseArray<Object> columnIndexToValues) {
         if (columnIndexToValues.size() != mColumnCount) {
             throw new IllegalArgumentException("columnIndexValues count doesn't match columnCount");
         }
@@ -55,17 +56,22 @@ class RowView extends FrameLayout {
         mColumnIndexToValues = columnIndexToValues;
 
         for (int i = 0; i < mColumnIndexToValues.size(); i++) {
-            String columnEntry = mColumnIndexToValues.get(i);
+            Object columnEntry = mColumnIndexToValues.get(i);
 
             if (columnEntry == null) {
                 mTextViewList.get(i).setText("(NULL)");
                 mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_disabled));
-            } else if (TextUtils.isEmpty(columnEntry)) {
-                mTextViewList.get(i).setText("(EMPTY)");
-                mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_disabled));
             } else {
-                mTextViewList.get(i).setText(columnEntry);
-                mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_secondary));
+                if (columnEntry instanceof String && TextUtils.isEmpty(columnEntry.toString())) {
+                    mTextViewList.get(i).setText("(EMPTY)");
+                    mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_disabled));
+                } else if (columnEntry instanceof byte[]) {
+                    mTextViewList.get(i).setText(Arrays.toString((byte[]) columnEntry));
+                    mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_secondary));
+                } else {
+                    mTextViewList.get(i).setText(columnEntry.toString());
+                    mTextViewList.get(i).setTextColor(ContextCompat.getColor(getContext(), R.color.sqlite_manager_txt_secondary));
+                }
             }
 
         }

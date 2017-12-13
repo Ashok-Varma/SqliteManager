@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SqliteManagerActivity extends AppCompatActivity implements SqliteManagerView, AdapterView.OnItemSelectedListener, ColumnNameView.ColumnHeaderSortChangeListener, View.OnClickListener, TableRecyclerAdapter.Listener {
@@ -207,7 +208,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     }
 
     @Override
-    public void showAddEditRowDialog(final boolean isEdit, final String tableName, final String[] tableColumnNames, final SparseArray<String> oldColumnValues) {
+    public void showAddEditRowDialog(final boolean isEdit, final String tableName, final String[] tableColumnNames, final SparseArray<Object> oldColumnValues) {
         LayoutInflater inflater = this.getLayoutInflater();
         final ArrayList<TextInputEditText> editTextViews = new ArrayList<>(tableColumnNames.length);
 
@@ -225,8 +226,12 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             TextInputEditText currentInputEditText = (TextInputEditText) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text);
             editTextViews.add(currentInputEditText);
             linearLayout.addView(columnView);
-            if (oldColumnValues != null) {
-                currentInputEditText.setText(oldColumnValues.get(index));
+            if (oldColumnValues != null && oldColumnValues.get(index) != null) {
+                if (oldColumnValues.get(index) instanceof byte[]) {
+                    currentInputEditText.setText(Arrays.toString((byte[]) (oldColumnValues.get(index))));
+                } else {
+                    currentInputEditText.setText(oldColumnValues.get(index).toString());
+                }
             }
             index++;
         }
@@ -298,7 +303,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
     }
 
     @Override
-    public void displayRows(List<SparseArray<String>> columnIndexToValuesArray) {
+    public void displayRows(List<SparseArray<Object>> columnIndexToValuesArray) {
         mTableRecyclerAdapter.setData(columnIndexToValuesArray);
     }
 
@@ -354,14 +359,15 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
             return true;
         }
         if (item.getItemId() == R.id.action_export_result_as_json) {
-            mSqliteManagerPresenter.onExportResultAsJsonClicked();
+            String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
+            mSqliteManagerPresenter.onExportResultAsJsonClicked(selectedTableName);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onColumnValueClicked(SparseArray<String> columnValues) {
+    public void onColumnValueClicked(SparseArray<Object> columnValues) {
         String selectedTableName = mTableSelectionSpinner.getSelectedItem().toString();
         mSqliteManagerPresenter.onColumnValueClicked(selectedTableName, mColumnNameView.getTableColumnNames(), columnValues);
     }

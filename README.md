@@ -21,12 +21,12 @@ Based on your IDE you can import library in one of the following ways
 
 Gradle:
 ```groovy
-debugCompile 'com.ashokvarma.android:sqlite-manager:1.1.2'
-releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.1.2'
+debugCompile 'com.ashokvarma.android:sqlite-manager:1.2.0'
+releaseCompile 'com.ashokvarma.android:sqlite-manager-no-op:1.2.0'
 ```
 If you want this in library in production also then try this : 
 ```groovy
-compile 'com.ashokvarma.android:sqlite-manager:1.1.2'
+compile 'com.ashokvarma.android:sqlite-manager:1.2.0'
 ```
 
 
@@ -35,14 +35,14 @@ or grab via Maven:
 <dependency>
   <groupId>com.ashokvarma.android</groupId>
   <artifactId>sqlite-manager</artifactId>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
   <type>pom</type>
 </dependency>
 ```
 
 or Ivy:
 ```xml
-<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.1.2'>
+<dependency org='com.ashokvarma.android' name='sqlite-manager' rev='1.2.0'>
   <artifact name='$AID' ext='pom'></artifact>
 </dependency>
 ```
@@ -91,8 +91,8 @@ Then just pass the interface instance with the context to launchSqliteManager me
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), null);
 ```
 
-### CSV Export feature 
-To Use export as CSV feature. need to define FileProvider in your app manifest.
+### CSV/Json Export feature 
+To Use export as CSV/Json feature. need to define FileProvider in your app manifest.
 #### 1. If you don't have file-provider in your manifest
 1. Add this section under application tag in your manifest
 ```xml
@@ -113,7 +113,7 @@ To Use export as CSV feature. need to define FileProvider in your app manifest.
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <files-path
-        name="sqlite_csv_dump"
+        name="sqlite_dump"
         path="sqliteManager/" />
 </paths>
 ```
@@ -128,7 +128,7 @@ To Use export as CSV feature. need to define FileProvider in your app manifest.
 <paths>
     <!-- -.-.-.-.-.-.-.-.-.-.- your current paths, caches ..etc -.-.-.-.-.-.-.-.-.-.- -->
     <files-path
-        name="sqlite_csv_dump"
+        name="sqlite_dump"
         path="sqliteManager/" />
 </paths>
 ```
@@ -155,5 +155,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.1.2/sqlite-manager-1.1.2.aar
+[mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.2.0/sqlite-manager-1.2.0.aar
 [googlePlayStoreLink]: https://play.google.com/store/apps/details?id=com.ashokvarma.sqlitemanager.sample

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
  */
 class SqliteManagerPresenter {
     private final SqliteResponseRetriever mSqliteResponseRetriever;
-    private final String mCSVFileShareAuthority;
+    private final String mFileShareAuthority;
     private final SqliteDataRetriever mSqliteDataRetriever;
     private SqliteManagerView mSqliteManagerView;
     private ArrayList<String> mTableNames = new ArrayList<>();
@@ -32,9 +33,9 @@ class SqliteManagerPresenter {
     private String mPreviousCustomQuery;
 
 
-    SqliteManagerPresenter(SqliteDataRetriever sqliteDataRetriever, String csvFileShareAuthority) {
+    SqliteManagerPresenter(SqliteDataRetriever sqliteDataRetriever, String fileShareAuthority) {
         mSqliteDataRetriever = sqliteDataRetriever;
-        mCSVFileShareAuthority = csvFileShareAuthority;
+        mFileShareAuthority = fileShareAuthority;
         mSqliteResponseRetriever = new SqliteResponseRetriever(mSqliteDataRetriever);
     }
 
@@ -109,15 +110,15 @@ class SqliteManagerPresenter {
         }
     }
 
-    void onExportResultAsJsonClicked() {
-        SqliteManagerUtils.shareSqliteResponseDataAsJson(getView().getViewContext(), mCurrentsqliteResponseData);
+    void onExportResultAsJsonClicked(String selectedTableName) {
+        SqliteManagerUtils.shareSqliteResponseDataAsJsonFile(getView().getViewContext(), mCurrentsqliteResponseData, selectedTableName, mFileShareAuthority);
     }
 
     void onExportResultAsCSVClicked(String selectedTableName) {
-        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData, selectedTableName, mCSVFileShareAuthority);
+        SqliteManagerUtils.shareSqliteResponseDataAsCsvFile(getView().getViewContext(), mCurrentsqliteResponseData, selectedTableName, mFileShareAuthority);
     }
 
-    void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<String> columnValues) {
+    void onColumnValueClicked(String tableName, String[] tableColumnNames, SparseArray<Object> columnValues) {
         if (tableName == null || TextUtils.isEmpty(tableName)) {
             getView().informErrorToUser(R.string.sqlite_manager_please_select_a_table);
             return;
@@ -207,7 +208,7 @@ class SqliteManagerPresenter {
         }
     }
 
-    void deleteRow(String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues) {
+    void deleteRow(String tableName, String[] tableColumnNames, SparseArray<Object> oldColumnValues) {
         if (tableColumnNames.length != oldColumnValues.size()) {
             getView().informErrorToUser(R.string.sqlite_manager_table_column_length_error);
             return;
@@ -234,7 +235,7 @@ class SqliteManagerPresenter {
         }
     }
 
-    void updateRow(String tableName, String[] tableColumnNames, SparseArray<String> oldColumnValues, ArrayList<String> columnValues) {
+    void updateRow(String tableName, String[] tableColumnNames, SparseArray<Object> oldColumnValues, ArrayList<String> columnValues) {
         if (tableColumnNames.length != oldColumnValues.size() || tableColumnNames.length != columnValues.size()) {
             getView().informErrorToUser(R.string.sqlite_manager_table_column_length_error);
             return;
@@ -247,7 +248,17 @@ class SqliteManagerPresenter {
             String columnName = tableColumnNames[columnIndex];
             columnIndex++;
             if (!TextUtils.isEmpty(currentColumnValue)) {
-                updateQuery = updateQuery.concat(columnName).concat(" = \'").concat(currentColumnValue).concat("\', ");
+                Object oldColumnValue = oldColumnValues.get(columnIndex);
+                if (oldColumnValue != null && oldColumnValue instanceof byte[]) {
+                    if (!(Arrays.toString((byte[]) oldColumnValue)).equalsIgnoreCase(currentColumnValue)) {
+                        // old and current value not equal
+                        getView().informErrorToUser(R.string.sqlite_manager_blob_not_supported);
+                        return;
+                    }
+                    // if equal no need to update them
+                } else {
+                    updateQuery = updateQuery.concat(columnName).concat(" = \'").concat(currentColumnValue).concat("\', ");
+                }
             }
         }
 
@@ -272,14 +283,15 @@ class SqliteManagerPresenter {
 
     }
 
-    private String getWhereCondition(String[] tableColumnNames, SparseArray<String> columnValues) {
+    private String getWhereCondition(String[] tableColumnNames, SparseArray<Object> columnValues) {
         String whereCondition = "";
         int columnIndex = 0;
         for (String currentColumnName : tableColumnNames) {
-            String columnValue = columnValues.get(columnIndex);
+            Object columnValue = columnValues.get(columnIndex);
             columnIndex++;
-            if (columnValue != null) {
-                whereCondition = whereCondition.concat(currentColumnName).concat("=\'").concat(columnValue).concat("\'").concat(" AND ");
+            if (columnValue != null && !(columnValue instanceof byte[])) {
+                // leave null and byte[] values
+                whereCondition = whereCondition.concat(currentColumnName).concat("=\'").concat(columnValue.toString()).concat("\'").concat(" AND ");
             }
         }
         if (whereCondition.endsWith(" AND ")) {
@@ -351,19 +363,35 @@ class SqliteManagerPresenter {
             try {
                 Cursor cursor = sqliteResponse.getCursor();
                 String[] selectedTableColumnNames = cursor.getColumnNames();
+                int[] selectedTableColumnTypes = new int[selectedTableColumnNames.length];
                 int columnCount = cursor.getColumnCount();
-                List<SparseArray<String>> valuesArray = new ArrayList<>(cursor.getCount());
+                List<SparseArray<Object>> valuesArray = new ArrayList<>(cursor.getCount());
 
                 if (cursor.moveToFirst()) {
                     do {
-                        SparseArray<String> columnValuePair = new SparseArray<>(columnCount);
+                        SparseArray<Object> columnValuePair = new SparseArray<>(columnCount);
                         for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-                            columnValuePair.put(columnIndex, cursor.getString(columnIndex));
+                            int fieldType = cursor.getType(columnIndex);
+                            selectedTableColumnTypes[columnIndex] = fieldType;
+                            if (fieldType == Cursor.FIELD_TYPE_NULL) {
+                                columnValuePair.put(columnIndex, cursor.getString(columnIndex));
+                            } else if (fieldType == Cursor.FIELD_TYPE_INTEGER) {
+                                columnValuePair.put(columnIndex, cursor.getInt(columnIndex));
+                            } else if (fieldType == Cursor.FIELD_TYPE_FLOAT) {
+                                columnValuePair.put(columnIndex, cursor.getFloat(columnIndex));
+                            } else if (fieldType == Cursor.FIELD_TYPE_STRING) {
+                                columnValuePair.put(columnIndex, cursor.getString(columnIndex));
+                            } else if (fieldType == Cursor.FIELD_TYPE_BLOB) {
+                                columnValuePair.put(columnIndex, cursor.getBlob(columnIndex));
+                            } else {
+                                // never in this case
+                                columnValuePair.put(columnIndex, cursor.getString(columnIndex));
+                            }
                         }
                         valuesArray.add(columnValuePair);
                     } while (cursor.moveToNext());
                 }
-                return new SqliteResponseData(columnCount, selectedTableColumnNames, valuesArray);
+                return new SqliteResponseData(columnCount, selectedTableColumnNames, selectedTableColumnTypes, valuesArray);
             } catch (Exception exception) {
                 // sometimes cursor will not be null. when there are any constraints
                 return new SqliteResponseData(exception);

@@ -11,7 +11,7 @@ import android.content.Context;
  */
 public class SqliteManager {
 
-    public static void launchSqliteManager(Context context, SqliteDataRetriever sqliteDataRetriever, String csvFileShareAuthority) {
+    public static void launchSqliteManager(Context context, SqliteDataRetriever sqliteDataRetriever, String fileShareAuthority) {
         // stub
     }
 

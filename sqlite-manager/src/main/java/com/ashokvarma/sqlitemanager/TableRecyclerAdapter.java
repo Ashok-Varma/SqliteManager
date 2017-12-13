@@ -19,10 +19,10 @@ import java.util.List;
  */
 class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.ViewHolder> {
 
-    private List<SparseArray<String>> mColumnIndexToValuesArray;
+    private List<SparseArray<Object>> mColumnIndexToValuesArray;
     private Listener mListener;
 
-    TableRecyclerAdapter(@Nullable List<SparseArray<String>> columnIndexToValuesArray) {
+    TableRecyclerAdapter(@Nullable List<SparseArray<Object>> columnIndexToValuesArray) {
         mColumnIndexToValuesArray = columnIndexToValuesArray;
     }
 
@@ -31,7 +31,7 @@ class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.Vie
         return mColumnIndexToValuesArray.get(position).size();
     }
 
-    void setData(List<SparseArray<String>> mColumnIndexToValuesArray) {
+    void setData(List<SparseArray<Object>> mColumnIndexToValuesArray) {
         this.mColumnIndexToValuesArray = mColumnIndexToValuesArray;
         notifyDataSetChanged();
     }
@@ -81,6 +81,6 @@ class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.Vie
     }
 
     interface Listener {
-        void onColumnValueClicked(SparseArray<String> columnValues);
+        void onColumnValueClicked(SparseArray<Object> columnValues);
     }
 }

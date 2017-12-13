@@ -49,6 +49,22 @@ public class SqliteHelper extends SQLiteOpenHelper {
     private static final String BOOK_KEY_SEQUEL_ID = "sequel_id";
     private static final String BOOK_KEY_PREQUEL_ID = "prequel_id";
 
+    // Contacts book name
+    private static final String TABLE_TYPE_TEST = "type_test";
+
+    // Contacts Book Columns names
+    private static final String TYPE_TEST_KEY_ID = "id";
+    private static final String TYPE_TEST_KEY_NUMBER = "number";
+    private static final String TYPE_TEST_KEY_NUMBER_NON = "number_non";
+    private static final String TYPE_TEST_KEY_FLOAT = "float";
+    private static final String TYPE_TEST_KEY_FLOAT_NON = "float_non";
+    private static final String TYPE_TEST_KEY_STRING = "string";
+    private static final String TYPE_TEST_KEY_STRING_NULL = "string_null";
+    private static final String TYPE_TEST_KEY_STRING_EMPTY = "string_empty";
+    private static final String TYPE_TEST_KEY_BLOB = "blob";
+    private static final String TYPE_TEST_KEY_BLOB_EMPTY = "blob_empty";
+    private static final String TYPE_TEST_KEY_BLOB_NULL = "blob_null";
+
     public SqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -75,6 +91,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public void dropTables(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPE_TEST);
     }
 
     public void createTables(SQLiteDatabase db) {
@@ -93,8 +110,21 @@ public class SqliteHelper extends SQLiteOpenHelper {
                 + BOOK_KEY_AGE_MAX_LIMIT + " INTEGER,"
                 + BOOK_KEY_SEQUEL_ID + " INTEGER,"
                 + BOOK_KEY_PREQUEL_ID + " INTEGER" + ")";
+        String CREATE_TYPE_TEST_TABLE = "CREATE TABLE " + TABLE_TYPE_TEST + "("
+                + TYPE_TEST_KEY_ID + " INTEGER PRIMARY KEY,"
+                + TYPE_TEST_KEY_NUMBER + " INTEGER,"
+                + TYPE_TEST_KEY_NUMBER_NON + " INTEGER,"
+                + TYPE_TEST_KEY_FLOAT + " FLOAT,"
+                + TYPE_TEST_KEY_FLOAT_NON + " FLOAT,"
+                + TYPE_TEST_KEY_STRING + " TEXT,"
+                + TYPE_TEST_KEY_STRING_NULL + " TEXT,"
+                + TYPE_TEST_KEY_STRING_EMPTY + " TEXT,"
+                + TYPE_TEST_KEY_BLOB + " BLOB,"
+                + TYPE_TEST_KEY_BLOB_EMPTY + " BLOB,"
+                + TYPE_TEST_KEY_BLOB_NULL + " BLOB" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_BOOKS_TABLE);
+        db.execSQL(CREATE_TYPE_TEST_TABLE);
         populateTestDataAsync();
     }
 
@@ -115,6 +145,19 @@ public class SqliteHelper extends SQLiteOpenHelper {
             SqliteBook sqliteBook = new SqliteBook(i, i % 5 == 0 ? getTheBigText() : "Book " + i, i % 10 == 0 ? null : "Author " + (bookCount + 1 - i));
             sqliteBook.setSerialNumber("serial" + i).setAgeMinLimit(i).setAgeMaxLimit(i + 10).setGenre("genre").setPrequelId(i + 1);
             addBook(sqliteBook);
+        }
+
+        int typeTest = 20;
+        for (int i = 1; i <= typeTest; i++) {
+            SqliteTypeTest sqliteTypeTest = new SqliteTypeTest();
+            sqliteTypeTest.setId(i);
+            sqliteTypeTest.setString("I am number " + i);
+            sqliteTypeTest.setStringEmpty("");
+            sqliteTypeTest.setNumber(1);
+            sqliteTypeTest.setFloatNumber(10);
+            sqliteTypeTest.setBlob(sqliteTypeTest.getString().getBytes());
+            sqliteTypeTest.setBlobEmpty(new byte[0]);
+            addTypeTest(sqliteTypeTest);
         }
     }
 
@@ -137,7 +180,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BOOK_KEY_ID, sqliteBook.getId()); // Book Name
+        values.put(BOOK_KEY_ID, sqliteBook.getId()); // Book id
         values.put(BOOK_KEY_TITLE, sqliteBook.getTitle()); // Book Name
         values.put(BOOK_KEY_AUTHOR, sqliteBook.getAuthor()); // Author Name
         values.put(BOOK_KEY_SERIAL_NUMBER, sqliteBook.getSerialNumber()); // Serial Number
@@ -150,6 +193,32 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_BOOKS, null, values);
+        db.close(); // Closing database connection
+    }
+
+    // Adding new book
+    public void addTypeTest(SqliteTypeTest sqliteTypeTest) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TYPE_TEST_KEY_ID, sqliteTypeTest.getId());
+        values.put(TYPE_TEST_KEY_NUMBER, sqliteTypeTest.getNumber());
+//        values.put(TYPE_TEST_KEY_NUMBER_NON , sqliteTypeTest.getNumberNon());
+        values.putNull(TYPE_TEST_KEY_NUMBER_NON);
+        values.put(TYPE_TEST_KEY_FLOAT, sqliteTypeTest.getFloatNumber());
+//        values.put(TYPE_TEST_KEY_FLOAT_NON , sqliteTypeTest.getFloatNumberNon());
+        values.putNull(TYPE_TEST_KEY_FLOAT_NON);
+        values.put(TYPE_TEST_KEY_STRING, sqliteTypeTest.getString());
+//        values.put(TYPE_TEST_KEY_STRING_NULL , sqliteTypeTest.getStringNull());
+        values.putNull(TYPE_TEST_KEY_STRING_NULL);
+        values.put(TYPE_TEST_KEY_STRING_EMPTY, sqliteTypeTest.getStringEmpty());
+        values.put(TYPE_TEST_KEY_BLOB, sqliteTypeTest.getBlob());
+        values.put(TYPE_TEST_KEY_BLOB_EMPTY, sqliteTypeTest.getBlobEmpty());
+//        values.put(TYPE_TEST_KEY_BLOB_NULL, sqliteTypeTest.getBlobNull());
+        values.putNull(TYPE_TEST_KEY_BLOB_NULL);
+
+        // Inserting Row
+        db.insert(TABLE_TYPE_TEST, null, values);
         db.close(); // Closing database connection
     }
 

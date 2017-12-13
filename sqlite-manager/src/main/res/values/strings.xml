@@ -20,6 +20,7 @@
     <string name="sqlite_manager_update">Update</string>
     <string name="sqlite_manager_delete">Delete</string>
     <string name="sqlite_manager_table_column_length_error">table column length is not equal to submitted values length</string>
+    <string name="sqlite_manager_blob_not_supported">Blob i.e byte[] operations are not supported by library</string>
     <string name="sqlite_manager_all_columns_cant_be_empty">All columns can\'t be empty</string>
     <string name="sqlite_manager_add_row_success">Row added Successfully</string>
     <string name="sqlite_manager_add_row_error">Error adding Row</string>
