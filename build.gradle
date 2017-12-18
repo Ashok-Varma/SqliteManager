@@ -32,14 +32,14 @@ task clean(type: Delete) {
 
 ext {
     minSdkVersion = 14
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.2'
 
-    supportLibVersion = '27.0.1'
+    supportLibVersion = '27.0.2'
 
     roomDbVersion = "1.0.0"
 
-    LIBRARY_VERSION_NAME = "1.2.0"
-    LIBRARY_VERSION_CODE = 14
+    LIBRARY_VERSION_NAME = "1.2.1"
+    LIBRARY_VERSION_CODE = 15
 }
