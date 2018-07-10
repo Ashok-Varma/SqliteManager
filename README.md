@@ -107,8 +107,7 @@ To Use export as CSV/Json feature. need to define FileProvider in your app manif
         android:resource="@xml/file_provider_paths" />
 </provider>
 ```
-2. create a new xml file with name file_provider_paths 
-3. add files-path in xml as below in the manifest
+2. create a new xml file with name file_provider_paths and paste the below content in the file
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
@@ -117,7 +116,7 @@ To Use export as CSV/Json feature. need to define FileProvider in your app manif
         path="sqliteManager/" />
 </paths>
 ```
-4. while launching sqlite manager pass application_id
+3. while launching sqlite manager pass application_id
 ```java
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), BuildConfig.APPLICATION_ID);
 ```
