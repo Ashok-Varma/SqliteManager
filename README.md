@@ -12,8 +12,9 @@ Sqlite Manager helps to manage your android Sqlite Database very effectively wit
 
 ## Features
 
+* Add, Update and Delete entries from tables in UI (no sql).
 * Check all the table entries in your database with preferred sort order
-* Do custom queries on your database and results are displayed in UI
+* Do custom queries on your database and results are displayed in UI 
 
 ## Download
 
