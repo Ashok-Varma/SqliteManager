@@ -1,3 +1,5 @@
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-SqliteManager-green.svg?style=flat )]( https://android-arsenal.com/details/1/7021 )
+
 # SqliteManager
 
 **get sample apk from [Google Play Store][googlePlayStoreLink]**
