@@ -50,7 +50,7 @@ class SqliteResponseData {
         return mColumnIndexToValuesArray;
     }
 
-    public boolean isQuerySuccess() {
+    boolean isQuerySuccess() {
         return mQuerySuccess;
     }
 

@@ -249,7 +249,7 @@ class SqliteManagerPresenter {
             columnIndex++;
             if (!TextUtils.isEmpty(currentColumnValue)) {
                 Object oldColumnValue = oldColumnValues.get(columnIndex);
-                if (oldColumnValue != null && oldColumnValue instanceof byte[]) {
+                if (oldColumnValue instanceof byte[]) {
                     if (!(Arrays.toString((byte[]) oldColumnValue)).equalsIgnoreCase(currentColumnValue)) {
                         // old and current value not equal
                         getView().informErrorToUser(R.string.sqlite_manager_blob_not_supported);

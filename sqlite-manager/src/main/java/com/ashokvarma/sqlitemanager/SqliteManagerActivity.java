@@ -69,22 +69,22 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         mSqliteManagerPresenter = new SqliteManagerPresenter(SqliteManager.mSqliteDataRetriever, getIntent().getStringExtra(CSV_FILE_SHARE_AUTHORITY));
 
         mSqliteManagerParent = findViewById(R.id.sqlite_manager_parent);
-        mTableSelectionSpinner = (AppCompatSpinner) findViewById(R.id.sqlite_manager_table_selection_spinner);
+        mTableSelectionSpinner = findViewById(R.id.sqlite_manager_table_selection_spinner);
         mErrorLayout = findViewById(R.id.sqlite_manager_error_layout);
         mTableLayout = findViewById(R.id.sqlite_manager_table_layout);
-        mColumnNameView = (ColumnNameView) findViewById(R.id.sqlite_manager_table_layout_header);
-        mErrorLayoutText = (TextView) findViewById(R.id.sqlite_manager_error_layout_text);
-        mTableLayoutRecyclerView = (RecyclerView) findViewById(R.id.sqlite_manager_table_layout_recycler_view);
+        mColumnNameView = findViewById(R.id.sqlite_manager_table_layout_header);
+        mErrorLayoutText = findViewById(R.id.sqlite_manager_error_layout_text);
+        mTableLayoutRecyclerView = findViewById(R.id.sqlite_manager_table_layout_recycler_view);
         mActionCustomQuery = findViewById(R.id.sqlite_manager_action_custom_query);
-        mSqliteManagerAddFab = (FloatingActionButton) findViewById(R.id.sqlite_manager_add_fab);
+        mSqliteManagerAddFab = findViewById(R.id.sqlite_manager_add_fab);
 
         mTableSelectionContainer = findViewById(R.id.sqlite_manager_table_selection_container);
         mCustomQueryContainer = findViewById(R.id.sqlite_manager_custom_query_container);
-        mCustomQueryText = (TextView) findViewById(R.id.sqlite_manager_custom_query_text);
-        mCustomQueryEdit = (ImageView) findViewById(R.id.sqlite_manager_custom_query_edit);
-        mCustomQueryClear = (ImageView) findViewById(R.id.sqlite_manager_custom_query_clear);
+        mCustomQueryText = findViewById(R.id.sqlite_manager_custom_query_text);
+        mCustomQueryEdit = findViewById(R.id.sqlite_manager_custom_query_edit);
+        mCustomQueryClear = findViewById(R.id.sqlite_manager_custom_query_clear);
 
-        mToolbar = (Toolbar) findViewById(R.id.sqlite_manager_toolbar);
+        mToolbar = findViewById(R.id.sqlite_manager_toolbar);
         setSupportActionBar(mToolbar);
 
         mTableRecyclerAdapter = new TableRecyclerAdapter(null);
@@ -185,7 +185,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.sqlite_manager_custom_query_dialog, null);
 
-        final TextInputEditText customQueryEditText = (TextInputEditText) dialogView.findViewById(R.id.sqlite_manager_custom_query_edit_text);
+        final TextInputEditText customQueryEditText = dialogView.findViewById(R.id.sqlite_manager_custom_query_edit_text);
         customQueryEditText.setText(previousCustomQuery);
 
         new AlertDialog
@@ -214,16 +214,16 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
         final View dialogView = inflater.inflate(R.layout.sqlite_manager_add_edit_dialog_container, null);
 
-        LinearLayout linearLayout = (LinearLayout) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_container);
-        Button deleteButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_delete);
-        Button cancelButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_cancel);
-        Button updateButton = (Button) dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_update);
+        LinearLayout linearLayout = dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_container);
+        Button deleteButton = dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_delete);
+        Button cancelButton = dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_cancel);
+        Button updateButton = dialogView.findViewById(R.id.sqlite_manager_add_edit_dialog_update);
 
         int index = 0;
         for (String currentColumnName : tableColumnNames) {
             View columnView = inflater.inflate(R.layout.sqlite_manager_add_edit_dialog_item, null);
             ((TextInputLayout) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_text_input_layout)).setHint(currentColumnName);
-            TextInputEditText currentInputEditText = (TextInputEditText) columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text);
+            TextInputEditText currentInputEditText = columnView.findViewById(R.id.sqlite_manager_add_edit_dialog_edit_text);
             editTextViews.add(currentInputEditText);
             linearLayout.addView(columnView);
             if (oldColumnValues != null && oldColumnValues.get(index) != null) {
@@ -286,7 +286,7 @@ public class SqliteManagerActivity extends AppCompatActivity implements SqliteMa
 
     @Override
     public void setSpinnerAdapter(ArrayList<String> tableNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tableNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mTableSelectionSpinner.setAdapter(adapter);
     }

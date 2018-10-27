@@ -1,5 +1,6 @@
 package com.ashokvarma.sqlitemanager;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -36,17 +37,18 @@ class TableRecyclerAdapter extends RecyclerView.Adapter<TableRecyclerAdapter.Vie
         notifyDataSetChanged();
     }
 
-    public void setListener(Listener listener) {
+    void setListener(Listener listener) {
         this.mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(new RowView(parent.getContext(), viewType));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mRowView.setData(mColumnIndexToValuesArray.get(position));
     }
 
