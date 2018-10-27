@@ -1,3 +1,5 @@
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-SqliteManager-green.svg?style=flat )]( https://android-arsenal.com/details/1/7021 )
+
 # SqliteManager
 
 **get sample apk from [Google Play Store][googlePlayStoreLink]**
@@ -12,6 +14,7 @@ Sqlite Manager helps to manage your android Sqlite Database very effectively wit
 
 ## Features
 
+* Add, Update and Delete entries from tables in UI (no sql).
 * Check all the table entries in your database with preferred sort order
 * Do custom queries on your database and results are displayed in UI
 
@@ -107,8 +110,7 @@ To Use export as CSV/Json feature. need to define FileProvider in your app manif
         android:resource="@xml/file_provider_paths" />
 </provider>
 ```
-2. create a new xml file with name file_provider_paths 
-3. add files-path in xml as below in the manifest
+2. create a new xml file with name file_provider_paths and paste the below content in the file
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
@@ -117,7 +119,7 @@ To Use export as CSV/Json feature. need to define FileProvider in your app manif
         path="sqliteManager/" />
 </paths>
 ```
-4. while launching sqlite manager pass application_id
+3. while launching sqlite manager pass application_id
 ```java
     SqliteManager.launchSqliteManager(this, new HelperSqliteDataRetriever(sqliteHelper), BuildConfig.APPLICATION_ID);
 ```
@@ -155,5 +157,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Other Open Source Libraries
+1. [Gander](https://github.com/Ashok-Varma/Gander) : Gander is a simple in-app HTTP inspector for Android OkHttp clients. Gander intercepts and persists all HTTP requests and responses inside your application, and provides a UI for inspecting their content.
+2. [SharedPrefManager](https://github.com/Ashok-Varma/SharedPrefManager) : SharedPref Manager is a Dev Debug tool that helps to manage(Edit, Add, Clear) your android Shared Preferences.
+3. [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation) : This Library helps users to use Bottom Navigation Bar (A new pattern from google) with ease and allows ton of customizations.
+
 [mavenAarDownload]: https://repo1.maven.org/maven2/com/ashokvarma/android/sqlite-manager/1.3.0/sqlite-manager-1.3.0.aar
 [googlePlayStoreLink]: https://play.google.com/store/apps/details?id=com.ashokvarma.sqlitemanager.sample
